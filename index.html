@@ -398,20 +398,69 @@ const TODAY = D.date;
 const STREAK_KEY = "cizar_streak_v2", HISTORY_KEY = "cizar_history_v2", SESSION_KEY = "cizar_session_v1";
 
 function saveSession() {
-  localStorage.setItem(SESSION_KEY, JSON.stringify({date:TODAY, pts, log, dumpEntries, postponed, loggedIds}));
+  localStorage.setItem(SESSION_KEY, JSON.stringify({date:TODAY, pts, log, dumpEntries, postponed, loggedIds, dailyMax}));
 }
 function loadSession() {
   try {
     const raw = localStorage.getItem(SESSION_KEY);
     if (!raw) return;
     const s = JSON.parse(raw);
-    if (s.date !== TODAY) { localStorage.removeItem(SESSION_KEY); return; }
+    if (s.date !== TODAY) {
+      if ((s.log && s.log.length > 0) || (s.dumpEntries && s.dumpEntries.length > 0)) {
+        setTimeout(() => showPendingExportBanner(s), 400);
+      } else {
+        localStorage.removeItem(SESSION_KEY);
+      }
+      return;
+    }
     pts = s.pts || 0;
     log = s.log || [];
     dumpEntries = s.dumpEntries || [];
     postponed = s.postponed || {};
     loggedIds = s.loggedIds || {};
-  } catch(e) { /* corrupted — start fresh */ }
+  } catch(e) { localStorage.removeItem(SESSION_KEY); }
+}
+function showPendingExportBanner(s) {
+  if (document.getElementById('pendingBar')) return;
+  const bar = document.createElement('div');
+  bar.id = 'pendingBar';
+  bar.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#1a1a2e;border:1.5px solid #f6b93b;border-radius:14px;padding:12px 14px;z-index:9999;display:flex;align-items:center;gap:10px;max-width:340px;width:90%;box-shadow:0 4px 20px rgba(0,0,0,.5)';
+  bar.innerHTML = `<span style="font-size:13px;color:#f6b93b;flex:1">📤 Log del <b>${s.date}</b> sin exportar</span><button onclick="exportPendingSession()" style="background:#f6b93b;color:#000;border:none;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap">Descargar</button><button onclick="dismissPendingSession()" style="background:transparent;color:#666;border:none;font-size:20px;cursor:pointer;line-height:1;padding:0 2px">×</button>`;
+  document.body.appendChild(bar);
+  bar._sessionData = s;
+}
+function exportPendingSession() {
+  const bar = document.getElementById('pendingBar');
+  if (!bar) return;
+  const s = bar._sessionData;
+  const sm = s.dailyMax || dailyMax;
+  const abandoned = Object.keys(s.postponed||{}).filter(id => {
+    if ((s.loggedIds||{})['task-done-'+id]) return false;
+    if ((s.log||[]).some(l => l.contactId==id && l.type!=='postpone')) return false;
+    const task = D.tasks.find(t => String(t.id) === id);
+    if (task && (s.log||[]).some(l => l.personId==task.personId && l.type!=='postpone')) return false;
+    return true;
+  }).length;
+  const finalPts = Math.max(0, (s.pts||0) - abandoned*10);
+  const payload = {
+    date:s.date, agent:D.agent,
+    summary:{pts:finalPts, ptsRaw:s.pts||0, dailyMax:sm, pct:Math.round(finalPts/sm*100),
+      level:getLevel(finalPts), actionsLogged:(s.log||[]).length, dumpEntries:(s.dumpEntries||[]).length, abandonedPenalty:abandoned*10},
+    actions:s.log||[], braindump:s.dumpEntries||[],
+    postponed:Object.entries(s.postponed||{}).map(([id,v])=>({taskId:parseInt(id),...v}))
+  };
+  const blob = new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'cizar-log-'+s.date+'.json';
+  a.click();
+  dismissPendingSession();
+  showToast('📤 Log de '+s.date+' descargado','green');
+}
+function dismissPendingSession() {
+  const bar = document.getElementById('pendingBar');
+  if (bar) bar.remove();
+  localStorage.removeItem(SESSION_KEY);
 }
 
 // ─── INIT ─────────────────────────────────────────────────────────────────────
