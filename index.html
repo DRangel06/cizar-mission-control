@@ -395,15 +395,34 @@ let pts = 0, dailyMax = 0;
 let log = [], dumpEntries = [], postponed = {}, loggedIds = {};
 let todayTibios = [], currentPostponeTask = null;
 const TODAY = D.date;
-const STREAK_KEY = "cizar_streak_v2", HISTORY_KEY = "cizar_history_v2";
+const STREAK_KEY = "cizar_streak_v2", HISTORY_KEY = "cizar_history_v2", SESSION_KEY = "cizar_session_v1";
+
+function saveSession() {
+  localStorage.setItem(SESSION_KEY, JSON.stringify({date:TODAY, pts, log, dumpEntries, postponed, loggedIds}));
+}
+function loadSession() {
+  try {
+    const raw = localStorage.getItem(SESSION_KEY);
+    if (!raw) return;
+    const s = JSON.parse(raw);
+    if (s.date !== TODAY) { localStorage.removeItem(SESSION_KEY); return; }
+    pts = s.pts || 0;
+    log = s.log || [];
+    dumpEntries = s.dumpEntries || [];
+    postponed = s.postponed || {};
+    loggedIds = s.loggedIds || {};
+  } catch(e) { /* corrupted — start fresh */ }
+}
 
 // ─── INIT ─────────────────────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('hdrDate').textContent = fmtDateHeader(TODAY);
   computeDailyMax();
+  loadSession();
   loadStreak();
   pickTibios();
   renderAll();
+  renderDump();
   // Set default postpone date to tomorrow
   const tm = new Date(TODAY + 'T12:00:00');
   tm.setDate(tm.getDate() + 1);
@@ -704,6 +723,7 @@ function doLog(type) {
   if (type === 'complete_task') loggedIds['task-done-'+contactId] = true;
   else loggedIds[section+'-'+contactId] = true;
   addPts(p, document.getElementById('actionModal'));
+  saveSession();
   closeModal();
   showToast('✅ '+name+' — +'+p+' pts', 'green');
   if (section==='tibio') renderTibios();
@@ -744,6 +764,7 @@ function confirmPostpone() {
   postponed[taskId] = {until, reason};
   log.push({timestamp:new Date().toISOString(), type:'postpone', taskId, personName, until, reason, pts:D.pts.postpone});
   addPts(D.pts.postpone, null);
+  saveSession();
   closePostpone();
   showToast('⏰ Postponido hasta '+until+' (+1)','warn');
   renderUrgentes();
@@ -762,6 +783,7 @@ function addDump() {
   dumpEntries.unshift({timestamp:new Date().toISOString(), text});
   ta.value = '';
   addPts(D.pts.braindump, document.getElementById('dumpDrawer'));
+  saveSession();
   renderDump();
   showToast('💭 +2 pts — anotado!','green');
 }
