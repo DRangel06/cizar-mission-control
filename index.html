@@ -296,7 +296,7 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, sa
 const D = {
   date: new Date().toLocaleDateString('en-CA'),
   agent: "Cizar Romano",
-  pts: { complete_task:15, action:10, action_cr:15, postpone:1, braindump:2 },
+  pts: { complete_task:15, action:10, action_cr:15, postpone:1, braindump:10 },
   levels: { basic:.40, medium:.70, onfire:.95 },
 
   tasks: [
@@ -573,17 +573,18 @@ function renderUrgentes() {
 }
 
 function renderActivos() {
-  const proc = D.active.filter(a => a.isEnProceso && !a.isONMS);
-  const ac = D.active.filter(a => !a.isEnProceso && !a.isONMS);
-  const onms = D.active.filter(a => a.isONMS);
+  const proc = D.active.filter(a => a.isEnProceso && !a.isONMS && !loggedIds['proc-'+a.id]);
+  const ac = D.active.filter(a => !a.isEnProceso && !a.isONMS && !loggedIds['active-'+a.id]);
+  const onms = D.active.filter(a => a.isONMS && !loggedIds['onms-'+a.id]);
+  const lomas = D.lomas.filter(c => !loggedIds['lomas-'+c.id]);
   document.getElementById('procCt').textContent = proc.length;
   document.getElementById('activeCt').textContent = ac.length + onms.length;
-  document.getElementById('lomasCt').textContent = D.lomas.length;
+  document.getElementById('lomasCt').textContent = lomas.length;
 
   document.getElementById('procList').innerHTML = proc.map(c => clientCard(c,'proc')).join('') ||
     '<div class="empty" style="padding:12px">Sin deals activos</div>';
   document.getElementById('activeList').innerHTML = [...ac.map(c => clientCard(c,'active')), ...onms.map(c => clientCard(c,'onms'))].join('');
-  document.getElementById('lomasList').innerHTML = D.lomas.map(c => lomasCard(c)).join('');
+  document.getElementById('lomasList').innerHTML = lomas.map(c => lomasCard(c)).join('');
 }
 
 function clientCard(c, sec) {
@@ -627,12 +628,11 @@ function lomasCard(c) {
 
 function renderTibios() {
   const stageLabel = {reNurture:'🔵 reNurture',reActivar:'🟡 reActivar',reActualizar:'🟠 reActualizar',Lead:'⚪ Lead',Closed:'✅ Closed'};
-  document.getElementById('tibioList').innerHTML = todayTibios.map(c => {
-    const logged = !!loggedIds['tibio-'+c.id];
+  document.getElementById('tibioList').innerHTML = todayTibios.filter(c => !loggedIds['tibio-'+c.id]).map(c => {
     return `<div class="card">
       <div class="card-row">
         <div>
-          <div class="card-name">${logged?'<span class="done-mark">✓ </span>':''}${c.name}</div>
+          <div class="card-name">${c.name}</div>
           ${c.phone?`<div class="card-sub">📱 ${c.phone}</div>`:`<div class="card-sub">Sin teléfono</div>`}
         </div>
         <span class="tag" style="background:var(--border);color:var(--sub);align-self:flex-start;font-size:10px;white-space:nowrap">${stageLabel[c.stage]||c.stage}</span>
@@ -834,7 +834,7 @@ function addDump() {
   addPts(D.pts.braindump, document.getElementById('dumpDrawer'));
   saveSession();
   renderDump();
-  showToast('💭 +2 pts — anotado!','green');
+  showToast('💭 +10 pts — anotado!','green');
 }
 function renderDump() {
   const el = document.getElementById('dumpEntries');
