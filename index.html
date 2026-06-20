@@ -360,7 +360,7 @@ body { background:var(--bg); color:var(--text); font-family:-apple-system,sans-s
 // ─── RANKS ────────────────────────────────────────────────────────────────────
 const RANKS = [
   {name:'Bacteria',      e:'🦠', xp:0},
-  {name:'Tardigrado',    e:'🐾', xp:100},
+  {name:'Ameba',         e:'🔵', xp:100},
   {name:'Hormiga',       e:'🐜', xp:250},
   {name:'Gusano',        e:'🐛', xp:450},
   {name:'Caracol',       e:'🐌', xp:700},
@@ -400,7 +400,7 @@ const RANKS = [
   {name:'Cíclope',       e:'👁️', xp:91500},
   {name:'Minotauro',     e:'🐂', xp:100500},
   {name:'Medusa',        e:'🐍', xp:110000},
-  {name:'Lich',          e:'☠️', xp:120500},
+  {name:'Tardigrado',    e:'🐾', xp:120500},
   {name:'Leviatán',      e:'🌊', xp:132000},
   {name:'Alien',         e:'👽', xp:145000},
   {name:'Cyborg',        e:'🤖', xp:159500},
@@ -415,7 +415,7 @@ const RANKS = [
 const D = {
   date: new Date().toLocaleDateString('en-CA'),
   agent: "Cizar Romano",
-  pts: { complete_task:10, action:10, action_cr:15, postpone:1, braindump:10, custom_done:10 },
+  pts: { complete_task:10, action:10, action_cr:15, postpone:1, braindump:5, custom_done:10 },
 
   tasks: [
     {id:115,person:"Jorge Noa",personId:607,name:"Follow Up | Empezar Mercadeo",dueDate:"2026-06-22"},
@@ -680,7 +680,7 @@ function loadStreak() {
   document.getElementById('streakN').textContent = s.n;
 }
 function saveStreak() {
-  if (pts <= 0) return;
+  if (pts < 300) return;
   let s = JSON.parse(localStorage.getItem(STREAK_KEY)||'{"d":"","n":0}');
   const yest = offsetDate(TODAY,-1);
   if (s.d===yest) { s.n+=1; s.d=TODAY; }
