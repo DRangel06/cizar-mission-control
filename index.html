@@ -638,6 +638,16 @@ function dismissPendingSession() {
 }
 
 // ─── INIT ─────────────────────────────────────────────────────────────────────
+// Seed state for first-time load on a new device (baked 2026-06-20)
+(function seedState() {
+  if (!localStorage.getItem(XP_KEY)) localStorage.setItem(XP_KEY, '303');
+  if (!localStorage.getItem(STREAK_KEY)) localStorage.setItem(STREAK_KEY, JSON.stringify({d:'2026-06-20',n:4}));
+  if (!localStorage.getItem(HISTORY_KEY)) localStorage.setItem(HISTORY_KEY, JSON.stringify({
+    '2026-06-19':{pts:155,max:1000,level:'lv1',actions:9,dump:7},
+    '2026-06-20':{pts:23,max:1130,level:'lv1',actions:4,dump:8}
+  }));
+})();
+
 window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('hdrDate').textContent = fmtDateHeader(TODAY);
   computeDailyMax();
