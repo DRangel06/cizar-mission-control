@@ -6,173 +6,191 @@
 <title>Mission Control — Cizar</title>
 <style>
 :root {
-  --bg: #0f1117;
-  --bg2: #181c27;
-  --bg3: #1e2333;
-  --card: #252b3b;
-  --border: #2e3650;
-  --text: #e2e8f0;
-  --sub: #8892a4;
-  --accent: #6c63ff;
-  --accent2: #4ade80;
-  --danger: #f87171;
-  --warn: #fbbf24;
-  --cr: #fb923c;
-  --onms: #38bdf8;
-  --gap: 10px;
-  --r: 12px;
+  --bg: #0f1117; --bg2: #181c27; --bg3: #1e2333; --card: #252b3b;
+  --border: #2e3650; --text: #e2e8f0; --sub: #8892a4;
+  --accent: #6c63ff; --accent2: #4ade80; --danger: #f87171;
+  --warn: #fbbf24; --cr: #fb923c; --onms: #38bdf8; --gap: 10px; --r: 12px;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-body { background: var(--bg); color: var(--text); font-family: -apple-system, sans-serif; font-size: 14px; min-height: 100vh; overflow-x: hidden; }
+* { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+body { background:var(--bg); color:var(--text); font-family:-apple-system,sans-serif; font-size:14px; min-height:100vh; overflow-x:hidden; }
 
 /* HEADER */
-.hdr { background: linear-gradient(135deg, #1e1b4b 0%, #0f1117 100%); padding: 14px 14px 10px; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--border); }
-.hdr-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-.hdr-title { font-size: 17px; font-weight: 700; letter-spacing: -.3px; }
-.hdr-date { font-size: 11px; color: var(--sub); }
-.pills { display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap; align-items: center; }
-.pill { padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
-.pill-streak { background: rgba(251,146,60,.18); color: var(--cr); border: 1px solid rgba(251,146,60,.3); }
-.pill-pts { background: rgba(108,99,255,.18); color: #a78bfa; border: 1px solid rgba(108,99,255,.3); }
-.pill-level { background: rgba(74,222,128,.18); color: var(--accent2); border: 1px solid rgba(74,222,128,.3); font-size: 11px; }
-.pill-level.basic { background: rgba(251,191,36,.15); color: var(--warn); border-color: rgba(251,191,36,.3); }
-.pill-level.medium { background: rgba(251,146,60,.15); color: var(--cr); border-color: rgba(251,146,60,.3); }
-.pill-level.onfire { background: rgba(239,68,68,.15); color: #f87171; border-color: rgba(239,68,68,.3); }
-.xpbar { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; margin-bottom: 4px; }
-.xpfill { height: 100%; background: linear-gradient(90deg, var(--accent), #4ade80); border-radius: 3px; transition: width .4s ease; width: 0%; }
-.xptext { font-size: 10px; color: var(--sub); text-align: right; }
+.hdr { background:linear-gradient(135deg,#1e1b4b 0%,#0f1117 100%); padding:14px 14px 10px; position:sticky; top:0; z-index:100; border-bottom:1px solid var(--border); }
+.hdr-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
+.hdr-title { font-size:17px; font-weight:700; letter-spacing:-.3px; }
+.hdr-date { font-size:11px; color:var(--sub); }
+.pills { display:flex; gap:6px; margin-bottom:8px; flex-wrap:wrap; align-items:center; }
+.pill { padding:3px 10px; border-radius:20px; font-size:12px; font-weight:600; }
+.pill-streak { background:rgba(251,146,60,.18); color:var(--cr); border:1px solid rgba(251,146,60,.3); }
+.pill-pts { background:rgba(108,99,255,.18); color:#a78bfa; border:1px solid rgba(108,99,255,.3); }
+.pill-level { background:rgba(74,222,128,.18); color:var(--accent2); border:1px solid rgba(74,222,128,.3); cursor:pointer; font-size:11px; }
+.pill-level:active { opacity:.8; }
+.xpbar { height:6px; background:var(--border); border-radius:3px; overflow:hidden; margin-bottom:4px; }
+.xpfill { height:100%; background:linear-gradient(90deg,var(--accent),#4ade80); border-radius:3px; transition:width .4s ease; width:0%; }
+.xptext { font-size:10px; color:var(--sub); text-align:right; }
 
-/* TABS */
-.tabs { display: flex; background: var(--bg2); border-bottom: 1px solid var(--border); position: sticky; z-index: 99; }
-.tab { flex: 1; padding: 10px 4px; border: none; background: none; color: var(--sub); font-size: 12px; font-weight: 600; cursor: pointer; transition: all .15s; border-bottom: 2px solid transparent; }
-.tab.active { color: var(--text); border-bottom-color: var(--accent); }
-.badge { background: var(--danger); color: #fff; border-radius: 10px; padding: 1px 5px; font-size: 10px; margin-left: 2px; }
+/* TABS — scrollable */
+.tabs { display:flex; background:var(--bg2); border-bottom:1px solid var(--border); position:sticky; z-index:99; overflow-x:auto; scrollbar-width:none; }
+.tabs::-webkit-scrollbar { display:none; }
+.tab { flex:0 0 auto; padding:10px 10px; border:none; background:none; color:var(--sub); font-size:11px; font-weight:700; cursor:pointer; transition:all .15s; border-bottom:2px solid transparent; white-space:nowrap; }
+.tab.active { color:var(--text); border-bottom-color:var(--accent); }
+.badge { background:var(--danger); color:#fff; border-radius:10px; padding:1px 5px; font-size:10px; margin-left:2px; }
 
 /* CONTENT */
-.tab-content { display: none; padding: var(--gap); padding-bottom: 90px; }
-.tab-content.active { display: block; }
+.tab-content { display:none; padding:var(--gap); padding-bottom:100px; }
+.tab-content.active { display:block; }
 
 /* SECTION HEADERS */
-.section-hdr { font-size: 11px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; color: var(--sub); margin: 14px 0 6px; display: flex; align-items: center; gap: 6px; }
-.section-hdr span.ct { background: var(--border); color: var(--sub); border-radius: 10px; padding: 1px 7px; font-size: 10px; }
+.section-hdr { font-size:11px; font-weight:700; letter-spacing:.5px; text-transform:uppercase; color:var(--sub); margin:14px 0 6px; display:flex; align-items:center; gap:6px; padding-left:8px; border-left:3px solid var(--border); }
+.section-hdr.s-activo { border-left-color:var(--accent); color:#a78bfa; }
+.section-hdr.s-tibio { border-left-color:var(--warn); color:var(--warn); }
+.section-hdr.s-cr { border-left-color:var(--cr); color:var(--cr); }
+.section-hdr.s-onms { border-left-color:var(--onms); color:var(--onms); }
+.section-hdr span.ct { background:var(--border); color:var(--sub); border-radius:10px; padding:1px 7px; font-size:10px; }
 
 /* CARDS */
-.card { background: var(--card); border: 1px solid var(--border); border-radius: var(--r); padding: 11px 12px; margin-bottom: 8px; }
-.card.overdue { border-left: 3px solid var(--danger); }
-.card.postponed-card { opacity: .65; border-style: dashed; }
-.card.cr-card { border-left: 3px solid var(--cr); }
-.card.onms-card { border-left: 3px solid var(--onms); }
-.card-row { display: flex; justify-content: space-between; align-items: flex-start; }
-.card-name { font-weight: 600; font-size: 13px; margin-bottom: 2px; }
-.card-sub { font-size: 11px; color: var(--sub); }
-.card-tags { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 5px; }
-.tag { font-size: 10px; padding: 2px 7px; border-radius: 8px; font-weight: 600; }
-.tag-overdue { background: rgba(248,113,113,.15); color: var(--danger); }
-.tag-due { background: rgba(251,191,36,.12); color: var(--warn); }
-.tag-ok { background: rgba(74,222,128,.12); color: var(--accent2); }
-.tag-cr { background: rgba(251,146,60,.15); color: var(--cr); }
-.tag-onms { background: rgba(56,189,248,.15); color: var(--onms); }
-.tag-deal { background: rgba(108,99,255,.15); color: #a78bfa; }
-.tag-post { background: rgba(100,116,139,.15); color: var(--sub); }
-.done-mark { color: var(--accent2); }
+.card { background:var(--card); border:1px solid var(--border); border-radius:var(--r); padding:11px 12px; margin-bottom:8px; }
+.card.overdue { border-left:3px solid var(--danger); }
+.card.postponed-card { opacity:.65; border-style:dashed; }
+.card.cr-card { border-left:3px solid var(--cr); }
+.card.onms-card { border-left:3px solid var(--onms); }
+.card.deal-contract { border-left:3px solid var(--cr); background:rgba(251,146,60,.04); }
+.card.deal-listed { border-left:3px solid var(--accent); }
+.card.acted { border-left:3px solid var(--accent2); opacity:.8; }
+.card-row { display:flex; justify-content:space-between; align-items:flex-start; }
+.card-name { font-weight:600; font-size:13px; margin-bottom:2px; }
+.card-sub { font-size:11px; color:var(--sub); }
+.card-tags { display:flex; gap:4px; flex-wrap:wrap; margin-top:5px; }
+.tag { font-size:10px; padding:2px 7px; border-radius:8px; font-weight:600; }
+.tag-overdue { background:rgba(248,113,113,.15); color:var(--danger); }
+.tag-due { background:rgba(251,191,36,.12); color:var(--warn); }
+.tag-ok { background:rgba(74,222,128,.12); color:var(--accent2); }
+.tag-cr { background:rgba(251,146,60,.15); color:var(--cr); }
+.tag-onms { background:rgba(56,189,248,.15); color:var(--onms); }
+.tag-deal { background:rgba(108,99,255,.15); color:#a78bfa; }
+.tag-contract { background:rgba(251,146,60,.2); color:var(--cr); }
+.tag-listed { background:rgba(108,99,255,.18); color:#a78bfa; }
+.tag-pre { background:rgba(100,116,139,.15); color:var(--sub); }
+.tag-post { background:rgba(100,116,139,.15); color:var(--sub); }
+.done-mark { color:var(--accent2); }
 
-/* ACTION BUTTONS on card */
-.card-actions { display: flex; gap: 5px; margin-top: 8px; flex-wrap: wrap; }
-.act-btn { flex: 1; min-width: 44px; padding: 5px 4px; border: 1px solid var(--border); background: var(--bg2); border-radius: 8px; color: var(--text); font-size: 11px; font-weight: 600; cursor: pointer; text-align: center; transition: all .1s; }
-.act-btn:active { transform: scale(.93); }
-.act-btn.call { border-color: rgba(74,222,128,.4); color: var(--accent2); }
-.act-btn.wa { border-color: rgba(74,222,128,.4); color: #4ade80; }
-.act-btn.vm { border-color: rgba(251,191,36,.4); color: var(--warn); }
-.act-btn.email { border-color: rgba(108,99,255,.4); color: #a78bfa; }
-.act-btn.nota { border-color: rgba(100,116,139,.4); color: var(--sub); }
-.act-btn.done { border-color: rgba(74,222,128,.5); color: var(--accent2); background: rgba(74,222,128,.1); }
-.act-btn.post { border-color: rgba(251,191,36,.4); color: var(--warn); }
+/* ACTION BUTTONS */
+.card-actions { display:flex; gap:5px; margin-top:8px; flex-wrap:wrap; }
+.act-btn { flex:1; min-width:44px; padding:5px 4px; border:1px solid var(--border); background:var(--bg2); border-radius:8px; color:var(--text); font-size:11px; font-weight:600; cursor:pointer; text-align:center; transition:all .1s; }
+.act-btn:active { transform:scale(.93); }
+.act-btn.call { border-color:rgba(74,222,128,.4); color:var(--accent2); }
+.act-btn.wa { border-color:rgba(74,222,128,.4); color:#4ade80; }
+.act-btn.vm { border-color:rgba(251,191,36,.4); color:var(--warn); }
+.act-btn.email { border-color:rgba(108,99,255,.4); color:#a78bfa; }
+.act-btn.nota { border-color:rgba(100,116,139,.4); color:var(--sub); }
+.act-btn.done { border-color:rgba(74,222,128,.5); color:var(--accent2); background:rgba(74,222,128,.1); }
+.act-btn.post { border-color:rgba(251,191,36,.4); color:var(--warn); }
+.act-btn.extra-nota { border-color:rgba(56,189,248,.4); color:var(--onms); }
 
-/* BRAIN DUMP FAB */
-.dump-fab { position: fixed; bottom: 18px; right: 16px; z-index: 200; width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), #7c3aed); border: none; color: #fff; font-size: 22px; cursor: pointer; box-shadow: 0 4px 16px rgba(108,99,255,.5); display: flex; align-items: center; justify-content: center; }
-.dump-fab:active { transform: scale(.9); }
+/* FABs */
+.dump-fab { position:fixed; bottom:18px; right:16px; z-index:200; width:52px; height:52px; border-radius:50%; background:linear-gradient(135deg,var(--accent),#7c3aed); border:none; color:#fff; font-size:22px; cursor:pointer; box-shadow:0 4px 16px rgba(108,99,255,.5); display:flex; align-items:center; justify-content:center; }
+.dump-fab:active { transform:scale(.9); }
+.done-fab { position:fixed; bottom:80px; right:16px; z-index:200; width:44px; height:44px; border-radius:50%; background:rgba(74,222,128,.15); border:1.5px solid var(--accent2); color:var(--accent2); font-size:20px; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 8px rgba(0,0,0,.3); }
+.done-fab:active { transform:scale(.9); }
 
 /* BRAIN DUMP DRAWER */
-.dump-drawer { position: fixed; bottom: 0; left: 0; right: 0; z-index: 300; background: var(--bg2); border-top: 1px solid var(--border); border-radius: 18px 18px 0 0; padding: 16px 14px 32px; transform: translateY(100%); transition: transform .25s ease; max-height: 75vh; overflow-y: auto; }
-.dump-drawer.open { transform: translateY(0); }
-.dump-hdr { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-.dump-hdr-title { font-size: 15px; font-weight: 700; }
-.dump-close { background: none; border: none; color: var(--sub); font-size: 20px; cursor: pointer; padding: 0 4px; }
-.dump-input-row { display: flex; gap: 8px; margin-bottom: 12px; }
-.dump-ta { flex: 1; background: var(--card); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 13px; padding: 10px; resize: none; height: 70px; font-family: inherit; }
-.dump-ta:focus { outline: none; border-color: var(--accent); }
-.dump-add { background: var(--accent); border: none; color: #fff; font-size: 18px; font-weight: 700; border-radius: 10px; padding: 0 16px; cursor: pointer; }
-.dump-entry { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 9px 11px; margin-bottom: 6px; }
-.dump-entry-text { font-size: 13px; margin-bottom: 3px; line-height: 1.4; }
-.dump-entry-time { font-size: 10px; color: var(--sub); }
-.dump-empty { text-align: center; color: var(--sub); font-size: 13px; padding: 16px 0; }
+.dump-drawer { position:fixed; bottom:0; left:0; right:0; z-index:300; background:var(--bg2); border-top:1px solid var(--border); border-radius:18px 18px 0 0; padding:16px 14px 32px; transform:translateY(100%); transition:transform .25s ease; max-height:75vh; overflow-y:auto; }
+.dump-drawer.open { transform:translateY(0); }
+.dump-hdr { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+.dump-hdr-title { font-size:15px; font-weight:700; }
+.dump-close { background:none; border:none; color:var(--sub); font-size:20px; cursor:pointer; padding:0 4px; }
+.dump-input-row { display:flex; gap:8px; margin-bottom:12px; }
+.dump-ta { flex:1; background:var(--card); border:1px solid var(--border); border-radius:10px; color:var(--text); font-size:13px; padding:10px; resize:none; height:70px; font-family:inherit; }
+.dump-ta:focus { outline:none; border-color:var(--accent); }
+.dump-add { background:var(--accent); border:none; color:#fff; font-size:18px; font-weight:700; border-radius:10px; padding:0 16px; cursor:pointer; }
+.dump-entry { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:9px 11px; margin-bottom:6px; }
+.dump-entry-text { font-size:13px; margin-bottom:3px; line-height:1.4; }
+.dump-entry-time { font-size:10px; color:var(--sub); }
+.dump-empty { text-align:center; color:var(--sub); font-size:13px; padding:16px 0; }
 
 /* ACTION MODAL */
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.7); z-index: 400; display: none; align-items: flex-end; }
-.modal-overlay.open { display: flex; }
-.modal { background: var(--bg2); border: 1px solid var(--border); border-radius: 18px 18px 0 0; padding: 18px 14px 32px; width: 100%; max-height: 85vh; overflow-y: auto; }
-.modal-title { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
-.modal-sub { font-size: 12px; color: var(--sub); margin-bottom: 12px; }
-.modal-note-label { font-size: 12px; color: var(--sub); margin-bottom: 5px; }
-.modal-note { width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 13px; padding: 10px; resize: none; height: 70px; font-family: inherit; margin-bottom: 6px; }
-.modal-note:focus { outline: none; border-color: var(--accent); }
-.note-warn { font-size: 11px; color: var(--warn); margin-bottom: 10px; display: none; }
-.modal-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.modal-btn { padding: 12px 6px; border: 1px solid var(--border); background: var(--card); border-radius: 12px; color: var(--text); font-size: 13px; font-weight: 700; cursor: pointer; text-align: center; }
-.modal-btn:active { transform: scale(.96); }
-.modal-btn.call { border-color: rgba(74,222,128,.5); color: var(--accent2); }
-.modal-btn.wa { border-color: rgba(37,211,102,.5); color: #4ade80; }
-.modal-btn.vm { border-color: rgba(251,191,36,.5); color: var(--warn); }
-.modal-btn.email { border-color: rgba(108,99,255,.5); color: #a78bfa; }
-.modal-btn.nota { border-color: rgba(100,116,139,.4); color: var(--sub); }
-.modal-btn.upd { border-color: rgba(56,189,248,.4); color: var(--onms); }
-.modal-btn.done { border-color: rgba(74,222,128,.6); color: #fff; background: rgba(74,222,128,.15); grid-column: 1/-1; }
-.modal-btn.cancel { color: var(--sub); grid-column: 1/-1; border-color: transparent; background: none; font-size: 13px; padding: 8px; }
+.modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.7); z-index:400; display:none; align-items:flex-end; }
+.modal-overlay.open { display:flex; }
+.modal { background:var(--bg2); border:1px solid var(--border); border-radius:18px 18px 0 0; padding:18px 14px 32px; width:100%; max-height:85vh; overflow-y:auto; }
+.modal-title { font-size:15px; font-weight:700; margin-bottom:2px; }
+.modal-sub { font-size:12px; color:var(--sub); margin-bottom:12px; }
+.modal-note-label { font-size:12px; color:var(--sub); margin-bottom:5px; }
+.modal-note { width:100%; background:var(--card); border:1px solid var(--border); border-radius:10px; color:var(--text); font-size:13px; padding:10px; resize:none; height:70px; font-family:inherit; margin-bottom:6px; }
+.modal-note:focus { outline:none; border-color:var(--accent); }
+.note-warn { font-size:11px; color:var(--warn); margin-bottom:10px; display:none; }
+.modal-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.modal-btn { padding:12px 6px; border:1px solid var(--border); background:var(--card); border-radius:12px; color:var(--text); font-size:13px; font-weight:700; cursor:pointer; text-align:center; }
+.modal-btn:active { transform:scale(.96); }
+.modal-btn.call { border-color:rgba(74,222,128,.5); color:var(--accent2); }
+.modal-btn.wa { border-color:rgba(37,211,102,.5); color:#4ade80; }
+.modal-btn.vm { border-color:rgba(251,191,36,.5); color:var(--warn); }
+.modal-btn.email { border-color:rgba(108,99,255,.5); color:#a78bfa; }
+.modal-btn.nota { border-color:rgba(100,116,139,.4); color:var(--sub); }
+.modal-btn.upd { border-color:rgba(56,189,248,.4); color:var(--onms); }
+.modal-btn.done { border-color:rgba(74,222,128,.6); color:#fff; background:rgba(74,222,128,.15); grid-column:1/-1; }
+.modal-btn.cancel { color:var(--sub); grid-column:1/-1; border-color:transparent; background:none; font-size:13px; padding:8px; }
 
 /* POSTPONE MODAL */
-.post-modal { background: var(--bg2); border: 1px solid var(--border); border-radius: 18px 18px 0 0; padding: 18px 14px 34px; width: 100%; }
-.post-title { font-size: 15px; font-weight: 700; margin-bottom: 14px; }
-.post-label { font-size: 12px; color: var(--sub); margin-bottom: 5px; }
-.post-field { margin-bottom: 12px; }
-.post-input { width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 13px; padding: 10px; font-family: inherit; }
-.post-input:focus { outline: none; border-color: var(--accent); }
-.post-ta { width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 13px; padding: 10px; resize: none; height: 65px; font-family: inherit; }
-.post-ta:focus { outline: none; border-color: var(--accent); }
-.post-confirm { width: 100%; padding: 13px; background: var(--warn); border: none; border-radius: 12px; color: #000; font-size: 14px; font-weight: 700; cursor: pointer; margin-bottom: 8px; }
-.post-cancel { width: 100%; padding: 10px; background: none; border: none; color: var(--sub); font-size: 13px; cursor: pointer; }
+.post-modal { background:var(--bg2); border:1px solid var(--border); border-radius:18px 18px 0 0; padding:18px 14px 34px; width:100%; }
+.post-title { font-size:15px; font-weight:700; margin-bottom:14px; }
+.post-label { font-size:12px; color:var(--sub); margin-bottom:5px; }
+.post-field { margin-bottom:12px; }
+.post-input { width:100%; background:var(--card); border:1px solid var(--border); border-radius:10px; color:var(--text); font-size:13px; padding:10px; font-family:inherit; }
+.post-input:focus { outline:none; border-color:var(--accent); }
+.post-ta { width:100%; background:var(--card); border:1px solid var(--border); border-radius:10px; color:var(--text); font-size:13px; padding:10px; resize:none; height:65px; font-family:inherit; }
+.post-ta:focus { outline:none; border-color:var(--accent); }
+.post-confirm { width:100%; padding:13px; background:var(--warn); border:none; border-radius:12px; color:#000; font-size:14px; font-weight:700; cursor:pointer; margin-bottom:8px; }
+.post-cancel { width:100%; padding:10px; background:none; border:none; color:var(--sub); font-size:13px; cursor:pointer; }
+
+/* CUSTOM DONE MODAL */
+.cdone-modal { background:var(--bg2); border:1px solid var(--border); border-radius:18px 18px 0 0; padding:18px 14px 34px; width:100%; }
+.cdone-title { font-size:15px; font-weight:700; margin-bottom:14px; }
+.cdone-field { margin-bottom:12px; }
+.cdone-label { font-size:12px; color:var(--sub); margin-bottom:5px; }
+.cdone-input { width:100%; background:var(--card); border:1px solid var(--border); border-radius:10px; color:var(--text); font-size:13px; padding:10px; font-family:inherit; }
+.cdone-input:focus { outline:none; border-color:var(--accent2); }
+.cdone-confirm { width:100%; padding:13px; background:rgba(74,222,128,.2); border:1.5px solid var(--accent2); border-radius:12px; color:var(--accent2); font-size:14px; font-weight:700; cursor:pointer; margin-bottom:8px; }
+.cdone-cancel { width:100%; padding:10px; background:none; border:none; color:var(--sub); font-size:13px; cursor:pointer; }
+
+/* RANK MODAL */
+.rank-list-item { display:flex; align-items:center; gap:10px; padding:8px 4px; border-bottom:1px solid var(--border); }
+.rank-list-item.current { background:rgba(108,99,255,.12); border-radius:8px; padding:8px; margin:-1px 0; border-color:transparent; }
+.rank-list-item.next-rank { background:rgba(74,222,128,.06); border-radius:8px; padding:8px; margin:-1px 0; border-color:transparent; }
+.rank-list-item.locked { opacity:.35; }
+.rank-emoji { font-size:20px; width:30px; text-align:center; }
+.rank-info { flex:1; }
+.rank-name { font-weight:700; font-size:13px; }
+.rank-xp { font-size:10px; color:var(--sub); }
+.rank-badge { font-size:10px; font-weight:700; padding:2px 7px; border-radius:8px; }
 
 /* STATS / HEATMAP */
-.heat-labels { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-bottom: 4px; }
-.heat-label { font-size: 9px; color: var(--sub); text-align: center; }
-.stats-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-bottom: 14px; }
-.heat-day { aspect-ratio: 1; border-radius: 5px; background: var(--border); }
-.heat-day.basic { background: rgba(251,191,36,.55); }
-.heat-day.medium { background: rgba(251,146,60,.65); }
-.heat-day.onfire { background: rgba(239,68,68,.75); }
-.heat-day.today-marker { outline: 2px solid #fff; outline-offset: 1px; }
-.stats-legend { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
-.leg-item { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--sub); }
-.leg-dot { width: 10px; height: 10px; border-radius: 3px; }
-.stats-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--r); padding: 14px; margin-bottom: 14px; }
-.stats-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--border); }
-.stats-row:last-child { border-bottom: none; }
-.stats-label { color: var(--sub); font-size: 12px; }
-.stats-val { font-weight: 700; font-size: 13px; }
-.export-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--accent), #7c3aed); border: none; border-radius: var(--r); color: #fff; font-size: 15px; font-weight: 700; cursor: pointer; }
-.export-btn:active { opacity: .85; }
+.heat-labels { display:grid; grid-template-columns:repeat(7,1fr); gap:5px; margin-bottom:4px; }
+.heat-label { font-size:9px; color:var(--sub); text-align:center; }
+.stats-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:5px; margin-bottom:14px; }
+.heat-day { aspect-ratio:1; border-radius:5px; background:var(--border); cursor:pointer; }
+.heat-day.lv1 { background:rgba(251,191,36,.4); }
+.heat-day.lv2 { background:rgba(251,146,60,.6); }
+.heat-day.lv3 { background:rgba(239,68,68,.75); }
+.heat-day.today-marker { outline:2px solid #fff; outline-offset:1px; }
+.stats-legend { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px; }
+.leg-item { display:flex; align-items:center; gap:4px; font-size:11px; color:var(--sub); }
+.leg-dot { width:10px; height:10px; border-radius:3px; }
+.stats-summary { background:var(--card); border:1px solid var(--border); border-radius:var(--r); padding:14px; margin-bottom:14px; }
+.stats-row { display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid var(--border); }
+.stats-row:last-child { border-bottom:none; }
+.stats-label { color:var(--sub); font-size:12px; }
+.stats-val { font-weight:700; font-size:13px; }
+.export-btn { width:100%; padding:14px; background:linear-gradient(135deg,var(--accent),#7c3aed); border:none; border-radius:var(--r); color:#fff; font-size:15px; font-weight:700; cursor:pointer; }
+.export-btn:active { opacity:.85; }
 
-/* TOAST */
-.toast { position: fixed; top: 80px; left: 50%; transform: translateX(-50%) translateY(-10px); background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 9px 16px; font-size: 13px; z-index: 500; opacity: 0; transition: all .2s; pointer-events: none; white-space: nowrap; max-width: 90vw; }
-.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-.toast.green { border-color: var(--accent2); color: var(--accent2); }
-.toast.warn { border-color: var(--warn); color: var(--warn); }
-
-/* FLOAT PTS */
-.float-pts { position: fixed; z-index: 600; font-size: 18px; font-weight: 900; color: var(--accent2); pointer-events: none; transition: all .8s ease; }
-
-/* EMPTY */
-.empty { text-align: center; color: var(--sub); font-size: 13px; padding: 30px 16px; }
-.empty-emoji { font-size: 32px; margin-bottom: 8px; }
+/* TOAST / FLOAT */
+.toast { position:fixed; top:80px; left:50%; transform:translateX(-50%) translateY(-10px); background:var(--bg3); border:1px solid var(--border); border-radius:10px; padding:9px 16px; font-size:13px; z-index:500; opacity:0; transition:all .2s; pointer-events:none; white-space:nowrap; max-width:90vw; }
+.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+.toast.green { border-color:var(--accent2); color:var(--accent2); }
+.toast.warn { border-color:var(--warn); color:var(--warn); }
+.float-pts { position:fixed; z-index:600; font-size:18px; font-weight:900; color:var(--accent2); pointer-events:none; transition:all .8s ease; }
+.empty { text-align:center; color:var(--sub); font-size:13px; padding:30px 16px; }
+.empty-emoji { font-size:32px; margin-bottom:8px; }
 </style>
 </head>
 <body>
@@ -185,18 +203,21 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, sa
   </div>
   <div class="pills">
     <span class="pill pill-streak">🔥 <span id="streakN">0</span> días</span>
-    <span class="pill pill-pts">⚡ <span id="ptsN">0</span> pts</span>
-    <span class="pill pill-level" id="levelChip">Rookie 🥉</span>
+    <span class="pill pill-pts">⚡ <span id="todayPtsN">0</span> hoy</span>
+    <span class="pill pill-level" id="levelChip" onclick="openRankModal()" title="Ver todos los rangos">🐜 Hormiga</span>
   </div>
   <div class="xpbar"><div class="xpfill" id="xpFill"></div></div>
-  <div class="xptext" id="xpText">0 / — pts · 0%</div>
+  <div class="xptext" id="xpText">250 XP total</div>
 </header>
 
 <!-- TABS -->
 <nav class="tabs" id="tabNav">
-  <button class="tab active" data-tab="urgentes" onclick="switchTab('urgentes')">🚨 Urgentes <span class="badge" id="urgBadge">7</span></button>
-  <button class="tab" data-tab="activos" onclick="switchTab('activos')">🔥 Activos</button>
-  <button class="tab" data-tab="tibios" onclick="switchTab('tibios')">💤 Tibios</button>
+  <button class="tab active" data-tab="urgentes" onclick="switchTab('urgentes')">🚨 Urgentes <span class="badge" id="urgBadge">0</span></button>
+  <button class="tab" data-tab="activos" onclick="switchTab('activos')">⚡ Activos</button>
+  <button class="tab" data-tab="tibios" onclick="switchTab('tibios')">🌡 Tibios</button>
+  <button class="tab" data-tab="random" onclick="switchTab('random')">🎲 Random</button>
+  <button class="tab" data-tab="cr" onclick="switchTab('cr')">🌴 CR</button>
+  <button class="tab" data-tab="onms" onclick="switchTab('onms')">🔵 ONMS</button>
   <button class="tab" data-tab="stats" onclick="switchTab('stats')">📊 Stats</button>
 </nav>
 
@@ -208,19 +229,35 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, sa
 
 <!-- TAB: ACTIVOS -->
 <div id="tab-activos" class="tab-content">
-  <div class="section-hdr">En Proceso 🔄 <span class="ct" id="procCt"></span></div>
-  <div id="procList"></div>
-  <div class="section-hdr">Active Clients ⚡ <span class="ct" id="activeCt"></span></div>
-  <div id="activeList"></div>
-  <div class="section-hdr">🌴 Lomas CR — Hot Leads <span class="ct" id="lomasCt"></span></div>
-  <div id="lomasList"></div>
+  <div class="section-hdr s-activo">Deals Activos FL <span class="ct" id="activosCt"></span></div>
+  <div id="activosList"></div>
 </div>
 
 <!-- TAB: TIBIOS -->
 <div id="tab-tibios" class="tab-content">
-  <div class="section-hdr">10 tibios de hoy <span class="ct">10</span></div>
-  <p style="font-size:11px;color:var(--sub);margin-bottom:10px">Rotación diaria automática · <span id="poolSize"></span> en el pool</p>
-  <div id="tibioList"></div>
+  <div class="section-hdr s-tibio">En Proceso <span class="ct" id="tibiosActiveCt"></span></div>
+  <div id="tibiosActiveList"></div>
+</div>
+
+<!-- TAB: RANDOM -->
+<div id="tab-random" class="tab-content">
+  <div class="section-hdr">Rotación diaria <span class="ct">10</span></div>
+  <p style="font-size:11px;color:var(--sub);margin-bottom:10px">Pool aleatorio · <span id="poolSize"></span> contactos</p>
+  <div id="randomList"></div>
+</div>
+
+<!-- TAB: COSTA RICA -->
+<div id="tab-cr" class="tab-content">
+  <div class="section-hdr s-cr">🌴 Lomas de la Llanada — CR <span class="ct" id="crCt"></span></div>
+  <div id="crList"></div>
+</div>
+
+<!-- TAB: ONMS -->
+<div id="tab-onms" class="tab-content">
+  <div class="section-hdr s-onms" style="margin-top:4px">💬 En Conversación <span class="ct" id="onmsConvCt"></span></div>
+  <div id="onmsConvList"></div>
+  <div class="section-hdr s-onms" style="margin-top:12px">📋 Prospecting <span class="ct" id="onmsPropCt"></span></div>
+  <div id="onmsPropList"></div>
 </div>
 
 <!-- TAB: STATS -->
@@ -234,16 +271,17 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, sa
   </div>
   <div class="stats-grid" id="heatmap"></div>
   <div class="stats-legend">
-    <div class="leg-item"><div class="leg-dot" style="background:var(--border)"></div>Sin datos</div>
-    <div class="leg-item"><div class="leg-dot" style="background:rgba(251,191,36,.55)"></div>Basic 40%+</div>
-    <div class="leg-item"><div class="leg-dot" style="background:rgba(251,146,60,.65)"></div>Medium 70%+</div>
-    <div class="leg-item"><div class="leg-dot" style="background:rgba(239,68,68,.75)"></div>On Fire 95%+</div>
+    <div class="leg-item"><div class="leg-dot" style="background:var(--border)"></div>Sin actividad</div>
+    <div class="leg-item"><div class="leg-dot" style="background:rgba(251,191,36,.4)"></div>Activo</div>
+    <div class="leg-item"><div class="leg-dot" style="background:rgba(251,146,60,.6)"></div>Bueno 30%+</div>
+    <div class="leg-item"><div class="leg-dot" style="background:rgba(239,68,68,.75)"></div>On Fire 60%+</div>
   </div>
   <div class="stats-summary" id="statsSummary"></div>
   <button class="export-btn" onclick="exportLog()">📤 Exportar Log del Día</button>
 </div>
 
-<!-- BRAIN DUMP FAB -->
+<!-- FABs -->
+<button class="done-fab" onclick="openCustomDone()" title="Registrar algo hecho ✅">✅</button>
 <button class="dump-fab" onclick="toggleDump()" title="Brain Dump 💭">💭</button>
 
 <!-- BRAIN DUMP DRAWER -->
@@ -256,7 +294,7 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, sa
     <textarea class="dump-ta" id="dumpInput" placeholder="Escribe cualquier cosa... ideas, notas, seguimientos pendientes..."></textarea>
     <button class="dump-add" onclick="addDump()">+</button>
   </div>
-  <div id="dumpEntries"><div class="dump-empty">💭 Sin entradas aún — escribe cualquier cosa</div></div>
+  <div id="dumpEntries"><div class="dump-empty">💭 Sin entradas aún</div></div>
 </div>
 
 <!-- ACTION MODAL -->
@@ -264,7 +302,7 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, sa
   <div class="modal">
     <div class="modal-title" id="modalTitle"></div>
     <div class="modal-sub" id="modalSub"></div>
-    <div class="modal-note-label">Nota (recomendado — puedes continuar sin ella):</div>
+    <div class="modal-note-label">Nota (recomendado):</div>
     <textarea class="modal-note" id="modalNote" placeholder="¿Qué pasó? ¿Próximo paso?..."></textarea>
     <div class="note-warn" id="noteWarn">💡 Agregar una nota ayuda al seguimiento</div>
     <div class="modal-actions" id="modalActions"></div>
@@ -288,16 +326,96 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, sa
   </div>
 </div>
 
+<!-- CUSTOM DONE MODAL -->
+<div class="modal-overlay" id="customDoneModal" onclick="closeCustomDoneClick(event)">
+  <div class="cdone-modal">
+    <div class="cdone-title">✅ Registrar algo hecho</div>
+    <div class="cdone-field">
+      <div class="cdone-label">¿Qué hiciste?</div>
+      <input type="text" class="cdone-input" id="cdoneName" placeholder="Ej: Llamé a banco, organicé documentos...">
+    </div>
+    <div class="cdone-field">
+      <div class="cdone-label">Contacto (opcional)</div>
+      <input type="text" class="cdone-input" id="cdoneContact" placeholder="Nombre del contacto...">
+    </div>
+    <button class="cdone-confirm" onclick="confirmCustomDone()">✅ Registrar (+10 pts)</button>
+    <button class="cdone-cancel" onclick="closeCustomDone()">Cancelar</button>
+  </div>
+</div>
+
+<!-- RANK MODAL -->
+<div class="modal-overlay" id="rankModal" onclick="closeRankModalClick(event)">
+  <div class="modal" style="max-height:80vh">
+    <div class="modal-title">🏆 50 Rangos — Sistema XP</div>
+    <div class="modal-sub" id="rankModalSub">Toca cualquier lado para cerrar</div>
+    <div id="rankList" style="margin-top:12px;overflow-y:auto;max-height:55vh"></div>
+    <button class="modal-btn cancel" onclick="document.getElementById('rankModal').classList.remove('open')">Cerrar</button>
+  </div>
+</div>
+
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
-// ─── DATA ────────────────────────────────────────────────────────────────────
+// ─── RANKS ────────────────────────────────────────────────────────────────────
+const RANKS = [
+  {name:'Bacteria',      e:'🦠', xp:0},
+  {name:'Tardigrado',    e:'🐾', xp:100},
+  {name:'Hormiga',       e:'🐜', xp:250},
+  {name:'Gusano',        e:'🐛', xp:450},
+  {name:'Caracol',       e:'🐌', xp:700},
+  {name:'Pollito',       e:'🐣', xp:1000},
+  {name:'Tortuga',       e:'🐢', xp:1350},
+  {name:'Ratón',         e:'🐭', xp:1750},
+  {name:'Gato',          e:'🐱', xp:2200},
+  {name:'Perro',         e:'🐶', xp:2700},
+  {name:'Pingüino',      e:'🐧', xp:3300},
+  {name:'Starfish',      e:'⭐', xp:4000},
+  {name:'Zorro',         e:'🦊', xp:4800},
+  {name:'Lobo',          e:'🐺', xp:5700},
+  {name:'León',          e:'🦁', xp:6700},
+  {name:'Tigre',         e:'🐯', xp:7800},
+  {name:'Águila',        e:'🦅', xp:9000},
+  {name:'Tiburón',       e:'🦈', xp:10300},
+  {name:'Cocodrilo',     e:'🐊', xp:11700},
+  {name:'Oso Grizzly',   e:'🐻', xp:13200},
+  {name:'Rinoceronte',   e:'🦏', xp:14800},
+  {name:'Elefante',      e:'🐘', xp:16500},
+  {name:'Gorila',        e:'🦍', xp:18300},
+  {name:'Calamar Gigante',e:'🦑',xp:20200},
+  {name:'Humano',        e:'🧑', xp:22200},
+  {name:'Guerrero',      e:'⚔️', xp:24500},
+  {name:'Ninja',         e:'🥷', xp:27000},
+  {name:'Vikingo',       e:'🪓', xp:29800},
+  {name:'Gladiador',     e:'🛡️', xp:33000},
+  {name:'Dragón',        e:'🐉', xp:36500},
+  {name:'Grifo',         e:'🦅', xp:40500},
+  {name:'Hidra',         e:'🐍', xp:45000},
+  {name:'Kraken',        e:'🐙', xp:50000},
+  {name:'Mantícora',     e:'🦂', xp:55500},
+  {name:'Pegaso',        e:'🐴', xp:61500},
+  {name:'Unicornio',     e:'🦄', xp:68000},
+  {name:'Fénix',         e:'🪽', xp:75000},
+  {name:'Titán',         e:'⚡', xp:83000},
+  {name:'Cíclope',       e:'👁️', xp:91500},
+  {name:'Minotauro',     e:'🐂', xp:100500},
+  {name:'Medusa',        e:'🐍', xp:110000},
+  {name:'Lich',          e:'☠️', xp:120500},
+  {name:'Leviatán',      e:'🌊', xp:132000},
+  {name:'Alien',         e:'👽', xp:145000},
+  {name:'Cyborg',        e:'🤖', xp:159500},
+  {name:'Supernova',     e:'💥', xp:175500},
+  {name:'Agujero Negro', e:'🕳️', xp:193000},
+  {name:'Singularidad',  e:'∞',  xp:212500},
+  {name:'Dios Cósmico',  e:'🌌', xp:234000},
+  {name:'Omega',         e:'🔱', xp:258000},
+];
+
+// ─── DATA ─────────────────────────────────────────────────────────────────────
 const D = {
   date: new Date().toLocaleDateString('en-CA'),
   agent: "Cizar Romano",
-  pts: { complete_task:15, action:10, action_cr:15, postpone:1, braindump:10 },
-  levels: { basic:.40, medium:.70, onfire:.95 },
+  pts: { complete_task:10, action:10, action_cr:15, postpone:1, braindump:10, custom_done:10 },
 
   tasks: [
     {id:115,person:"Jorge Noa",personId:607,name:"Follow Up | Empezar Mercadeo",dueDate:"2026-06-22"},
@@ -333,44 +451,83 @@ const D = {
     {id:152,person:"Shauna Crawford",personId:13,name:"Follow up Matterport 1152 View Pointe Cir — revisar fotos y proceso del listing",dueDate:"2026-06-25"},
     {id:153,person:"Javier Gonzalez",personId:26,name:"Follow up showing duplex 18222 LYNBROOK RD — confirmar asistencia Javier y familia",dueDate:"2026-06-23"},
     {id:154,person:"Enmanuel Ramirez",personId:617,name:"Llamar a Enmanuel Ramirez — 520 E Magnolia Ave, coordinar próximos pasos para venta",dueDate:"2026-06-20"},
-    {id:155,person:"Romano",personId:614,name:"Recoger cheques ONMS en oficina Avalon",dueDate:"2026-06-22"}
+    {id:155,person:"Romano",personId:614,name:"Recoger cheques ONMS en oficina Avalon",dueDate:"2026-06-22"},
   ],
 
-  active: [
-    {id:13,name:"Shauna Crawford",phone:"8134477318",dealName:"1152 View Pointe Cir, Lake Wales",dealStage:"Sellers - Listed",isEnProceso:true,isONMS:false},
-    {id:15,name:"Antonio Perez",phone:"8099160804",dealName:"Lot Purchase",dealStage:"Buyers - Potential Deals",isEnProceso:true,isONMS:false},
-    {id:16,name:"Rich Moore",phone:"",dealName:"Lots en Groveland",dealStage:"Buyers - Potential Deals",isEnProceso:true,isONMS:false},
-    {id:26,name:"Javier Gonzalez",phone:"",dealName:"Student rent",dealStage:"Buyers - Potential Deals",isEnProceso:true,isONMS:false},
-    {id:426,name:"Harolyn Dominguez",phone:"3052002086",dealName:"New Home ASAP",dealStage:"Buyers - Potential Deals",isEnProceso:true,isONMS:false},
-    {id:432,name:"Edgar De Lima",phone:"",dealName:"200k",dealStage:"Buyers - Potential Deals",isEnProceso:true,isONMS:false},
-    {id:434,name:"Senait Woldezghi",phone:"4152902472",dealName:"Deaaal!",dealStage:"Buyers - Potential Deals",isEnProceso:true,isONMS:false},
-    {id:2,name:"Rick Orsini",phone:"3219472644",dealName:null,dealStage:null,isEnProceso:false,isONMS:false},
-    {id:23,name:"Luke Mzungu Stone",phone:"4075740928",dealName:null,dealStage:null,isEnProceso:false,isONMS:false},
-    {id:52,name:"Farrah Alaidi",phone:"4077573327",dealName:null,dealStage:null,isEnProceso:false,isONMS:false},
-    {id:94,name:"Aura Jones",phone:"4074480389",dealName:null,dealStage:null,isEnProceso:false,isONMS:false},
-    {id:435,name:"Elias Woldezghi",phone:"4153686854",dealName:null,dealStage:null,isEnProceso:false,isONMS:false},
-    {id:607,name:"Jorge Noa",phone:"8189705449",dealName:null,dealStage:null,isEnProceso:false,isONMS:false},
-    {id:78,name:"Citrus Closing / Marsha Rhudd",phone:"",dealName:"ONMS",dealStage:"ONMS - Closed",isEnProceso:false,isONMS:true},
-    {id:77,name:"Citrus Closing / Melisha Maldonado",phone:"",dealName:"ONMS",dealStage:"ONMS - Closed",isEnProceso:false,isONMS:true}
+  // Activos tab — FL Buyers + Sellers deals (non-closed, active)
+  activos: [
+    // Sin deal activo pero en seguimiento
+    {id:2,  name:"Rick Orsini",        phone:"3219472644", dealName:null, dealStage:null, dealPrice:null},
+    {id:23, name:"Luke Mzungu Stone",  phone:"4075740928", dealName:null, dealStage:null, dealPrice:null},
+    {id:52, name:"Farrah Alaidi",      phone:"4077573327", dealName:null, dealStage:null, dealPrice:null},
+    {id:94, name:"Aura Jones",         phone:"4074480389", dealName:null, dealStage:null, dealPrice:null},
+    {id:435,name:"Elias Woldezghi",    phone:"4153686854", dealName:null, dealStage:null, dealPrice:null},
+    {id:607,name:"Jorge Noa",          phone:"8189705449", dealName:null, dealStage:null, dealPrice:null},
+    // FL Buyers — Under Contract 🔥
+    {id:53, name:"Grace McAllister",   phone:"", dealName:"2211 Beatrice Dr — cierre Jun 30", dealStage:"Buyers — Under Contract", dealPrice:364900},
+    // FL Sellers — Under Contract 🔥
+    {id:38, name:"Liliana Nieto",      phone:"", dealName:"2211 Beatrice Dr (seller)", dealStage:"Sellers — Under Contract", dealPrice:364900},
+    {id:197,name:"Andy Herrera",       phone:"", dealName:"482 Abba St, Altamonte Springs", dealStage:"Sellers — Under Contract", dealPrice:260000},
+    // FL Sellers — Listed
+    {id:406,name:"Rotimi Akinosho",    phone:"", dealName:"1660 Tropical Palms", dealStage:"Sellers — Listed", dealPrice:475000},
+    // FL Sellers — Pre-Listed
+    {id:617,name:"Enmanuel Ramirez",   phone:"", dealName:"520 E Magnolia Ave", dealStage:"Sellers — Pre-Listed", dealPrice:360000},
+    {id:208,name:"Carwin Correa",      phone:"", dealName:"11416 Satire St, Orlando", dealStage:"Sellers — Pre-Listed", dealPrice:null},
+    {id:7,  name:"Matt Cozzolino",     phone:"", dealName:"1423 Farrindon Cir, Lake Mary", dealStage:"Sellers — Pre-Listed", dealPrice:221900},
+    // FL Buyers — Potential Deals
+    {id:53, name:"Grace McAllister",   phone:"", dealName:"2211 Beatrice Dr", dealStage:"Buyers — Under Contract", dealPrice:364900},
+    {id:44, name:"Abraham Woldezgui",  phone:"4157066756", dealName:"Multifamily + Restaurant Bldg", dealStage:"Buyers — Potential Deals", dealPrice:3300000},
+    {id:58, name:"Nate Glen Wormley",  phone:"5402196675", dealName:"Investment AirBNB near Disney", dealStage:"Buyers — Potential Deals", dealPrice:450000},
+    {id:433,name:"Julián García",      phone:"", dealName:"Deaaal!", dealStage:"Buyers — Potential Deals", dealPrice:null},
+    {id:28, name:"Calvin Bunion",      phone:"", dealName:"Solivita - 350k", dealStage:"Buyers — Potential Deals", dealPrice:350000},
+    {id:22, name:"Sandeep Patel",      phone:"", dealName:"Deal Magnolia / Clermont", dealStage:"Buyers — Potential Deals", dealPrice:250000},
+    {id:351,name:"Antonio Toro",       phone:"", dealName:"Flip Homes", dealStage:"Buyers — Potential Deals", dealPrice:null},
+  ],
+
+  // Tibios tab — los "En Proceso" (deals activamente trabajados)
+  tibiosActive: [
+    {id:13, name:"Shauna Crawford",    phone:"8134477318", dealName:"1152 View Pointe Cir, Lake Wales", dealStage:"Sellers — Listed",           dealPrice:307000},
+    {id:15, name:"Antonio Perez",      phone:"8099160804", dealName:"Lot Purchase",                     dealStage:"Buyers — Potential Deals",    dealPrice:150000},
+    {id:16, name:"Rich Moore",         phone:"",           dealName:"Lots en Groveland",                dealStage:"Buyers — Potential Deals",    dealPrice:250000},
+    {id:26, name:"Javier Gonzalez",    phone:"",           dealName:"Student rent",                     dealStage:"Buyers — Potential Deals",    dealPrice:300000},
+    {id:426,name:"Harolyn Dominguez",  phone:"3052002086", dealName:"New Home ASAP",                   dealStage:"Buyers — Potential Deals",    dealPrice:null},
+    {id:432,name:"Edgar De Lima",      phone:"",           dealName:"200k",                             dealStage:"Buyers — Potential Deals",    dealPrice:null},
+    {id:434,name:"Senait Woldezghi",   phone:"4152902472", dealName:"Deaaal!",                          dealStage:"Buyers — Potential Deals",    dealPrice:null},
   ],
 
   lomas: [
-    {id:517,name:"Graciela",phone:"+50687344759"},
-    {id:531,name:"Ana Jiménez Hernández",phone:"+50688817338"},
-    {id:536,name:"Pablo Cedeno",phone:"+50688282552"},
-    {id:544,name:"Emilena Chinchilla Ramírez",phone:"+50688234608"},
-    {id:545,name:"Claudio Barrantes Ugalde",phone:"+50688144015"},
-    {id:546,name:"Andrés Jimenez",phone:"+50688544925"},
-    {id:548,name:"Fabian Ladino",phone:"+50662971078"},
-    {id:457,name:"Yuliana Lara Cordoba",phone:"+50689880326"},
-    {id:461,name:"Oscar Arauz",phone:"+50683167278"},
-    {id:464,name:"Roy Abarca",phone:"+50688287798"},
-    {id:469,name:"José Antonio Nicaragua",phone:"+50683135479"},
-    {id:478,name:"Jorge Hernandez",phone:"+50671302309"},
-    {id:481,name:"Karen Arroyo",phone:"+50670230315"},
-    {id:560,name:"Elizabeth Jiménez Miranda",phone:"+50684385070"},
-    {id:573,name:"Jonathan Gutierrez Umaña",phone:"+50686791759"},
-    {id:575,name:"Fabiola Suárez Zamora",phone:"+50687523949"}
+    {id:517,name:"Graciela",                    phone:"+50687344759"},
+    {id:531,name:"Ana Jiménez Hernández",       phone:"+50688817338"},
+    {id:536,name:"Pablo Cedeno",                phone:"+50688282552"},
+    {id:544,name:"Emilena Chinchilla Ramírez",  phone:"+50688234608"},
+    {id:545,name:"Claudio Barrantes Ugalde",    phone:"+50688144015"},
+    {id:546,name:"Andrés Jimenez",              phone:"+50688544925"},
+    {id:548,name:"Fabian Ladino",               phone:"+50662971078"},
+    {id:457,name:"Yuliana Lara Cordoba",        phone:"+50689880326"},
+    {id:461,name:"Oscar Arauz",                 phone:"+50683167278"},
+    {id:464,name:"Roy Abarca",                  phone:"+50688287798"},
+    {id:469,name:"José Antonio Nicaragua",      phone:"+50683135479"},
+    {id:478,name:"Jorge Hernandez",             phone:"+50671302309"},
+    {id:481,name:"Karen Arroyo",                phone:"+50670230315"},
+    {id:560,name:"Elizabeth Jiménez Miranda",   phone:"+50684385070"},
+    {id:573,name:"Jonathan Gutierrez Umaña",    phone:"+50686791759"},
+    {id:575,name:"Fabiola Suárez Zamora",       phone:"+50687523949"},
+  ],
+
+  // ONMS — Prospecting + Conversations (Closed excluidos)
+  onms: [
+    {id:610,name:"W Park Title / Lori Ciaravella",                        phone:"", stage:"Conversations"},
+    {id:71, name:"Happy Closings / Hemant Panchal",                       phone:"", stage:"Prospecting"},
+    {id:70, name:"RedDoorTitleGroup / Mike Lwin",                         phone:"", stage:"Prospecting"},
+    {id:69, name:"Alliance Title / Doug D. Nguyen",                       phone:"", stage:"Prospecting"},
+    {id:68, name:"Law Offices Greenspan / Marlene Fiallo",                phone:"", stage:"Prospecting"},
+    {id:67, name:"Silver Sea Title / Susan Gonzalez",                     phone:"", stage:"Prospecting"},
+    {id:66, name:"Park Ave Title / Eyra Santiago",                        phone:"", stage:"Prospecting"},
+    {id:65, name:"Innovative Title / Kathy Garcia",                       phone:"", stage:"Prospecting"},
+    {id:64, name:"The Closing City / Tristan Ali",                        phone:"", stage:"Prospecting"},
+    {id:63, name:"Equitable Title / Barbara",                             phone:"", stage:"Prospecting"},
+    {id:62, name:"The Closing Circle / Adaliz Martinez",                  phone:"", stage:"Prospecting"},
+    {id:61, name:"Golden Dog Title / Mary Mula",                          phone:"", stage:"Prospecting"},
   ],
 
   tibios_pool: [
@@ -404,16 +561,17 @@ const D = {
     {id:49,name:"Mustafa Mutawe",phone:"4072800709",stage:"reNurture"},
     {id:58,name:"Nate Glen Wormley",phone:"5402196675",stage:"reNurture"},
     {id:422,name:"Cindy (Lomas Lead)",phone:"",stage:"Lead"},
-    {id:433,name:"Julián García",phone:"",stage:"Lead"}
-  ]
+    {id:433,name:"Julián García",phone:"",stage:"Lead"},
+  ],
 };
 
 // ─── STATE ────────────────────────────────────────────────────────────────────
-let pts = 0, dailyMax = 0;
+let pts = 0, totalXP = 250, dailyMax = 0;
 let log = [], dumpEntries = [], postponed = {}, loggedIds = {};
-let todayTibios = [], currentPostponeTask = null;
+let todayRandom = [], currentPostponeTask = null;
 const TODAY = D.date;
-const STREAK_KEY = "cizar_streak_v2", HISTORY_KEY = "cizar_history_v2", SESSION_KEY = "cizar_session_v1";
+const STREAK_KEY = "cizar_streak_v2", HISTORY_KEY = "cizar_history_v2";
+const SESSION_KEY = "cizar_session_v2", XP_KEY = "cizar_xp_v1";
 
 function saveSession() {
   localStorage.setItem(SESSION_KEY, JSON.stringify({date:TODAY, pts, log, dumpEntries, postponed, loggedIds, dailyMax}));
@@ -424,11 +582,9 @@ function loadSession() {
     if (!raw) return;
     const s = JSON.parse(raw);
     if (s.date !== TODAY) {
-      if ((s.log && s.log.length > 0) || (s.dumpEntries && s.dumpEntries.length > 0)) {
-        setTimeout(() => showPendingExportBanner(s), 400);
-      } else {
-        localStorage.removeItem(SESSION_KEY);
-      }
+      if ((s.log&&s.log.length>0)||(s.dumpEntries&&s.dumpEntries.length>0)) {
+        setTimeout(()=>showPendingExportBanner(s), 400);
+      } else { localStorage.removeItem(SESSION_KEY); }
       return;
     }
     pts = s.pts || 0;
@@ -436,8 +592,17 @@ function loadSession() {
     dumpEntries = s.dumpEntries || [];
     postponed = s.postponed || {};
     loggedIds = s.loggedIds || {};
+    dailyMax = s.dailyMax || 0;
   } catch(e) { localStorage.removeItem(SESSION_KEY); }
 }
+
+function loadXP() {
+  const raw = localStorage.getItem(XP_KEY);
+  if (raw === null) { totalXP = 250; saveXP(); return; }
+  totalXP = parseInt(raw) || 250;
+}
+function saveXP() { localStorage.setItem(XP_KEY, String(totalXP)); }
+
 function showPendingExportBanner(s) {
   if (document.getElementById('pendingBar')) return;
   const bar = document.createElement('div');
@@ -454,24 +619,15 @@ function exportPendingSession() {
   const sm = s.dailyMax || dailyMax;
   const abandoned = Object.keys(s.postponed||{}).filter(id => {
     if ((s.loggedIds||{})['task-done-'+id]) return false;
-    if ((s.log||[]).some(l => l.contactId==id && l.type!=='postpone')) return false;
-    const task = D.tasks.find(t => String(t.id) === id);
-    if (task && (s.log||[]).some(l => l.personId==task.personId && l.type!=='postpone')) return false;
+    if ((s.log||[]).some(l=>l.contactId==id&&l.type!=='postpone')) return false;
+    const task = D.tasks.find(t=>String(t.id)===id);
+    if (task&&(s.log||[]).some(l=>l.personId==task.personId&&l.type!=='postpone')) return false;
     return true;
   }).length;
-  const finalPts = Math.max(0, (s.pts||0) - abandoned*10);
-  const payload = {
-    date:s.date, agent:D.agent,
-    summary:{pts:finalPts, ptsRaw:s.pts||0, dailyMax:sm, pct:Math.round(finalPts/sm*100),
-      level:getLevel(finalPts), actionsLogged:(s.log||[]).length, dumpEntries:(s.dumpEntries||[]).length, abandonedPenalty:abandoned*10},
-    actions:s.log||[], braindump:s.dumpEntries||[],
-    postponed:Object.entries(s.postponed||{}).map(([id,v])=>({taskId:parseInt(id),...v}))
-  };
+  const finalPts = Math.max(0,(s.pts||0)-abandoned*10);
+  const payload = {date:s.date,agent:D.agent,summary:{pts:finalPts,ptsRaw:s.pts||0,dailyMax:sm,pct:sm?Math.round(finalPts/sm*100):0,level:'',actionsLogged:(s.log||[]).length,dumpEntries:(s.dumpEntries||[]).length,abandonedPenalty:abandoned*10},actions:s.log||[],braindump:s.dumpEntries||[],postponed:Object.entries(s.postponed||{}).map(([id,v])=>({taskId:parseInt(id),...v}))};
   const blob = new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'cizar-log-'+s.date+'.json';
-  a.click();
+  const a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='cizar-log-'+s.date+'.json'; a.click();
   dismissPendingSession();
   showToast('📤 Log de '+s.date+' descargado','green');
 }
@@ -486,188 +642,270 @@ window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('hdrDate').textContent = fmtDateHeader(TODAY);
   computeDailyMax();
   loadSession();
+  loadXP();
   loadStreak();
-  pickTibios();
+  pickRandom();
   renderAll();
   renderDump();
-  // Set default postpone date to tomorrow
-  const tm = new Date(TODAY + 'T12:00:00');
-  tm.setDate(tm.getDate() + 1);
+  const tm = new Date(TODAY+'T12:00:00'); tm.setDate(tm.getDate()+1);
   document.getElementById('postDate').value = tm.toISOString().split('T')[0];
-  // Tab sticky position
   const hdrH = document.querySelector('.hdr').offsetHeight;
-  document.getElementById('tabNav').style.top = hdrH + 'px';
+  document.getElementById('tabNav').style.top = hdrH+'px';
 });
 
 function computeDailyMax() {
   const t = D.tasks.length * D.pts.complete_task;
-  const proc = D.active.filter(a => a.isEnProceso && !a.isONMS).length * D.pts.action;
-  const ac = D.active.filter(a => !a.isEnProceso && !a.isONMS).length * D.pts.action;
-  const onms = D.active.filter(a => a.isONMS).length * D.pts.action_cr;
-  const lm = D.lomas.length * D.pts.action_cr;
-  const tb = 10 * D.pts.action;
-  dailyMax = t + proc + ac + onms + lm + tb;
+  const activos = D.activos.length * D.pts.action;
+  const tibiosAct = D.tibiosActive.length * D.pts.action;
+  const rand = 10 * D.pts.action;
+  const cr = D.lomas.length * D.pts.action_cr;
+  const onms = D.onms.length * D.pts.action_cr;
+  dailyMax = t + activos + tibiosAct + rand + cr + onms;
 }
 
 function getActionPts(type, section) {
-  if (type === 'complete_task') return D.pts.complete_task;
-  if (section === 'lomas' || section === 'onms') return D.pts.action_cr;
+  if (type==='complete_task') return D.pts.complete_task;
+  if (section==='lomas'||section==='cr') return D.pts.action_cr;
+  if (section==='onms') return D.pts.action_cr;
   return D.pts.action;
 }
 
 // ─── STREAK ──────────────────────────────────────────────────────────────────
 function loadStreak() {
-  const s = JSON.parse(localStorage.getItem(STREAK_KEY) || '{"d":"","n":0}');
-  document.getElementById('streakN').textContent = s.n || 0;
+  let s = JSON.parse(localStorage.getItem(STREAK_KEY)||'null');
+  if (!s) {
+    s = {d: offsetDate(TODAY,-1), n:4};
+    localStorage.setItem(STREAK_KEY, JSON.stringify(s));
+  }
+  document.getElementById('streakN').textContent = s.n;
 }
-function saveStreak(newPts) {
-  const pct = dailyMax > 0 ? newPts / dailyMax : 0;
-  if (pct < D.levels.basic) return;
-  let s = JSON.parse(localStorage.getItem(STREAK_KEY) || '{"d":"","n":0}');
-  const yest = offsetDate(TODAY, -1);
-  if (s.d === yest) { s.n += 1; s.d = TODAY; }
-  else if (s.d !== TODAY) { s.n = 1; s.d = TODAY; }
+function saveStreak() {
+  if (pts <= 0) return;
+  let s = JSON.parse(localStorage.getItem(STREAK_KEY)||'{"d":"","n":0}');
+  const yest = offsetDate(TODAY,-1);
+  if (s.d===yest) { s.n+=1; s.d=TODAY; }
+  else if (s.d!==TODAY) { s.n=1; s.d=TODAY; }
   localStorage.setItem(STREAK_KEY, JSON.stringify(s));
   document.getElementById('streakN').textContent = s.n;
 }
 
-// ─── TIBIOS (date-seeded shuffle) ────────────────────────────────────────────
-function pickTibios() {
+// ─── RANDOM (old Tibios pool) ─────────────────────────────────────────────────
+function pickRandom() {
   const seed = parseInt(TODAY.replace(/-/g,''));
   const pool = [...D.tibios_pool];
   let s = seed;
-  for (let i = pool.length - 1; i > 0; i--) {
-    s = (s * 1664525 + 1013904223) & 0xffffffff;
-    const j = Math.abs(s) % (i + 1);
-    [pool[i], pool[j]] = [pool[j], pool[i]];
+  for (let i=pool.length-1;i>0;i--) {
+    s=(s*1664525+1013904223)&0xffffffff;
+    const j=Math.abs(s)%(i+1);
+    [pool[i],pool[j]]=[pool[j],pool[i]];
   }
-  todayTibios = pool.slice(0, 10);
+  todayRandom = pool.slice(0,10);
   document.getElementById('poolSize').textContent = D.tibios_pool.length;
 }
 
 // ─── RENDER ──────────────────────────────────────────────────────────────────
-function renderAll() { renderUrgentes(); renderActivos(); renderTibios(); updateScore(); }
+function renderAll() { renderUrgentes(); renderActivos(); renderTibiosActive(); renderRandom(); renderCR(); renderONMS(); updateScore(); }
 
 function renderUrgentes() {
-  const today = new Date(TODAY + 'T23:59:59');
-  const tasks = [...D.tasks].sort((a,b) => new Date(a.dueDate) - new Date(b.dueDate));
-  const pending = tasks.filter(t => !loggedIds['task-done-'+t.id] && !postponed[t.id]);
-  const posted = tasks.filter(t => postponed[t.id] && !loggedIds['task-done-'+t.id]);
-  const done = tasks.filter(t => loggedIds['task-done-'+t.id]);
+  const tasks = [...D.tasks].sort((a,b)=>new Date(a.dueDate)-new Date(b.dueDate));
+  const pending = tasks.filter(t=>!loggedIds['task-done-'+t.id]&&!postponed[t.id]);
+  const posted  = tasks.filter(t=>postponed[t.id]&&!loggedIds['task-done-'+t.id]);
+  const done    = tasks.filter(t=>loggedIds['task-done-'+t.id]);
   document.getElementById('urgBadge').textContent = pending.length;
   document.getElementById('urgCt').textContent = tasks.length;
-
-  let html = '';
   const renderTask = t => {
-    const due = new Date(t.dueDate + 'T23:59:59');
+    const due = new Date(t.dueDate+'T23:59:59');
     const isDone = !!loggedIds['task-done-'+t.id];
-    const isPost = !!postponed[t.id] && !isDone;
-    const isOverdue = due < new Date() && !isDone && !isPost;
-    const daysDiff = Math.ceil((due - new Date()) / 86400000);
+    const isPost = !!postponed[t.id]&&!isDone;
+    const isOverdue = due<new Date()&&!isDone&&!isPost;
+    const daysDiff = Math.ceil((due-new Date())/86400000);
     let badge = '';
-    if (isDone) badge = '<span class="tag tag-ok">✅ Completada</span>';
-    else if (isPost) badge = `<span class="tag tag-post">⏰ Hasta ${postponed[t.id].until}</span>`;
-    else if (isOverdue) badge = `<span class="tag tag-overdue">🔴 Vencida ${fmtDate(t.dueDate)}</span>`;
-    else if (daysDiff <= 2) badge = `<span class="tag tag-due">⚠️ ${fmtDate(t.dueDate)}</span>`;
-    else badge = `<span class="tag tag-ok" style="background:rgba(74,222,128,.08)">📅 ${fmtDate(t.dueDate)}</span>`;
-
-    const cardCls = 'card' + (isOverdue ? ' overdue' : '') + (isPost ? ' postponed-card' : '');
-    const acts = isDone ? '' : `<div class="card-actions">
-      <button class="act-btn done" onclick="openModal('complete_task',${t.id},'${e(t.person)}','${e(t.name)}',${t.personId},'task')">✅ Completa</button>
-      <button class="act-btn call" onclick="openModal('called',${t.id},'${e(t.person)}','${e(t.name)}',${t.personId},'task')">📞</button>
-      <button class="act-btn wa" onclick="openModal('whatsapp',${t.id},'${e(t.person)}','${e(t.name)}',${t.personId},'task')">💬</button>
-      <button class="act-btn nota" onclick="openModal('note',${t.id},'${e(t.person)}','${e(t.name)}',${t.personId},'task')">📝</button>
-      ${!isPost?`<button class="act-btn post" onclick="openPostpone(${t.id},'${e(t.person)}')">⏰</button>`:''}
-    </div>`;
-    html += `<div class="${cardCls}">
+    if (isDone) badge='<span class="tag tag-ok">✅ Completada</span>';
+    else if (isPost) badge=`<span class="tag tag-post">⏰ Hasta ${postponed[t.id].until}</span>`;
+    else if (isOverdue) badge=`<span class="tag tag-overdue">🔴 Vencida ${fmtDate(t.dueDate)}</span>`;
+    else if (daysDiff<=2) badge=`<span class="tag tag-due">⚠️ ${fmtDate(t.dueDate)}</span>`;
+    else badge=`<span class="tag tag-ok" style="background:rgba(74,222,128,.08)">📅 ${fmtDate(t.dueDate)}</span>`;
+    const cardCls='card'+(isOverdue?' overdue':'')+(isPost?' postponed-card':'');
+    let acts = '';
+    if (isDone) {
+      acts = `<div class="card-actions"><button class="act-btn extra-nota" onclick="openExtraNota(${t.id},'${e(t.person)}',${t.personId},'task')">📝 Nota extra</button></div>`;
+    } else {
+      acts = `<div class="card-actions">
+        <button class="act-btn done" onclick="openModal('complete_task',${t.id},'${e(t.person)}','${e(t.name)}',${t.personId},'task')">✅ Completa</button>
+        <button class="act-btn call" onclick="openModal('called',${t.id},'${e(t.person)}','${e(t.name)}',${t.personId},'task')">📞</button>
+        <button class="act-btn wa" onclick="openModal('whatsapp',${t.id},'${e(t.person)}','${e(t.name)}',${t.personId},'task')">💬</button>
+        <button class="act-btn nota" onclick="openModal('note',${t.id},'${e(t.person)}','${e(t.name)}',${t.personId},'task')">📝</button>
+        ${!isPost?`<button class="act-btn post" onclick="openPostpone(${t.id},'${e(t.person)}')">⏰</button>`:''}
+      </div>`;
+    }
+    return `<div class="${cardCls}">
       <div class="card-name">${isDone?'<span class="done-mark">✓ </span>':''}${t.person}</div>
       <div class="card-sub" style="margin-bottom:4px">${t.name}</div>
       <div class="card-tags">${badge}</div>
       ${acts}
     </div>`;
   };
-  [...pending, ...posted, ...done].forEach(renderTask);
-  document.getElementById('urgList').innerHTML = html || '<div class="empty"><div class="empty-emoji">🎉</div>¡Todas las tareas completadas!</div>';
+  document.getElementById('urgList').innerHTML = [...pending,...posted,...done].map(renderTask).join('') || '<div class="empty"><div class="empty-emoji">🎉</div>¡Todas las tareas completadas!</div>';
 }
 
-function renderActivos() {
-  const proc = D.active.filter(a => a.isEnProceso && !a.isONMS && !loggedIds['proc-'+a.id]);
-  const ac = D.active.filter(a => !a.isEnProceso && !a.isONMS && !loggedIds['active-'+a.id]);
-  const onms = D.active.filter(a => a.isONMS && !loggedIds['onms-'+a.id]);
-  const lomas = D.lomas.filter(c => !loggedIds['lomas-'+c.id]);
-  document.getElementById('procCt').textContent = proc.length;
-  document.getElementById('activeCt').textContent = ac.length + onms.length;
-  document.getElementById('lomasCt').textContent = lomas.length;
-
-  document.getElementById('procList').innerHTML = proc.map(c => clientCard(c,'proc')).join('') ||
-    '<div class="empty" style="padding:12px">Sin deals activos</div>';
-  document.getElementById('activeList').innerHTML = [...ac.map(c => clientCard(c,'active')), ...onms.map(c => clientCard(c,'onms'))].join('');
-  document.getElementById('lomasList').innerHTML = lomas.map(c => lomasCard(c)).join('');
+// Deal stage helpers
+function stageTag(stage) {
+  if (!stage) return '';
+  if (stage.includes('Under Contract')) return 'tag-contract';
+  if (stage.includes('Listed ')|| (stage.includes('Listed')&&!stage.includes('Pre'))) return 'tag-listed';
+  if (stage.includes('Pre')) return 'tag-pre';
+  return 'tag-due';
+}
+function stageIcon(stage) {
+  if (!stage) return '💼';
+  if (stage.includes('Under Contract')) return '🔥';
+  if (stage.includes('Listed')) return '📌';
+  return '💼';
+}
+function fmtPrice(p) {
+  if (!p) return '';
+  if (p>=1000000) return ' · $'+(p/1000000).toFixed(1)+'M';
+  if (p>=1000) return ' · $'+(p/1000).toFixed(0)+'k';
+  return ' · $'+p;
+}
+function dealCardCls(stage) {
+  if (!stage) return 'card';
+  if (stage.includes('Under Contract')) return 'card deal-contract';
+  if (stage.includes('Listed')&&!stage.includes('Pre')) return 'card deal-listed';
+  return 'card';
 }
 
-function clientCard(c, sec) {
+function dealCard(c, sec) {
   const logged = !!loggedIds[sec+'-'+c.id];
-  const cls = 'card' + (c.isONMS?' onms-card':'');
-  let badges = '';
-  if (c.isONMS) badges += '<span class="tag tag-onms">🔔 ONMS — Próximamente</span>';
-  if (c.dealName && !c.isONMS) badges += `<span class="tag tag-deal">💼 ${c.dealName}</span>`;
+  const cls = (logged ? 'card acted' : dealCardCls(c.dealStage));
+  const dealBadge = c.dealName
+    ? `<span class="tag ${stageTag(c.dealStage)}">${stageIcon(c.dealStage)} ${c.dealName}${fmtPrice(c.dealPrice)}</span>`
+    : '';
+  const acts = logged
+    ? `<div class="card-actions"><button class="act-btn extra-nota" onclick="openExtraNota(${c.id},'${e(c.name)}',${c.id},'${sec}')">📝 Nota extra</button></div>`
+    : `<div class="card-actions">
+        <button class="act-btn call" onclick="openModal('called',${c.id},'${e(c.name)}','',${c.id},'${sec}')">📞</button>
+        <button class="act-btn wa" onclick="openModal('whatsapp',${c.id},'${e(c.name)}','',${c.id},'${sec}')">💬 WA</button>
+        <button class="act-btn vm" onclick="openModal('voicemail',${c.id},'${e(c.name)}','',${c.id},'${sec}')">📳</button>
+        <button class="act-btn email" onclick="openModal('email',${c.id},'${e(c.name)}','',${c.id},'${sec}')">📧</button>
+        <button class="act-btn nota" onclick="openModal('note',${c.id},'${e(c.name)}','',${c.id},'${sec}')">📝</button>
+      </div>`;
   return `<div class="${cls}">
     <div class="card-name">${logged?'<span class="done-mark">✓ </span>':''}${c.name}</div>
     ${c.phone?`<div class="card-sub">📱 ${c.phone}</div>`:''}
-    ${badges?`<div class="card-tags" style="margin-top:5px">${badges}</div>`:''}
-    <div class="card-actions">
-      <button class="act-btn call" onclick="openModal('called',${c.id},'${e(c.name)}','',${c.id},'${sec}')">📞 Llamó</button>
-      <button class="act-btn wa" onclick="openModal('whatsapp',${c.id},'${e(c.name)}','',${c.id},'${sec}')">💬 WA</button>
-      <button class="act-btn vm" onclick="openModal('voicemail',${c.id},'${e(c.name)}','',${c.id},'${sec}')">📳 VM</button>
-      <button class="act-btn email" onclick="openModal('email',${c.id},'${e(c.name)}','',${c.id},'${sec}')">📧</button>
-      <button class="act-btn nota" onclick="openModal('note',${c.id},'${e(c.name)}','',${c.id},'${sec}')">📝</button>
-    </div>
+    ${dealBadge?`<div class="card-tags" style="margin-top:5px">${dealBadge}</div>`:''}
+    ${acts}
   </div>`;
 }
 
-function lomasCard(c) {
-  const logged = !!loggedIds['lomas-'+c.id];
-  return `<div class="card cr-card">
-    <div class="card-row">
-      <div>
-        <div class="card-name">${logged?'<span class="done-mark">✓ </span>':''}${c.name}</div>
-        ${c.phone?`<div class="card-sub">📱 ${c.phone}</div>`:''}
-      </div>
-      <span class="tag tag-cr" style="align-self:flex-start;margin-left:6px">🌴</span>
-    </div>
-    <div class="card-actions">
-      <button class="act-btn call" onclick="openModal('called',${c.id},'${e(c.name)}','',${c.id},'lomas')">📞 Llamó</button>
-      <button class="act-btn wa" onclick="openModal('whatsapp',${c.id},'${e(c.name)}','',${c.id},'lomas')">💬 WA</button>
-      <button class="act-btn vm" onclick="openModal('voicemail',${c.id},'${e(c.name)}','',${c.id},'lomas')">📳 VM</button>
-      <button class="act-btn nota" onclick="openModal('note',${c.id},'${e(c.name)}','',${c.id},'lomas')">📝</button>
-    </div>
-  </div>`;
+function stageOrder(a) {
+  if (!a.dealStage) return 5;
+  if (a.dealStage.includes('Under Contract')) return 1;
+  if (a.dealStage.includes('Listed ')|| (a.dealStage.includes('Listed')&&!a.dealStage.includes('Pre'))) return 2;
+  if (a.dealStage.includes('Pre')) return 3;
+  return 4;
 }
 
-function renderTibios() {
-  const stageLabel = {reNurture:'🔵 reNurture',reActivar:'🟡 reActivar',reActualizar:'🟠 reActualizar',Lead:'⚪ Lead',Closed:'✅ Closed'};
-  document.getElementById('tibioList').innerHTML = todayTibios.filter(c => !loggedIds['tibio-'+c.id]).map(c => {
-    return `<div class="card">
+function renderActivos() {
+  // Deduplicate by id (Grace appears twice in data)
+  const seen = new Set();
+  const all = D.activos.filter(a => { if(seen.has(a.id)) return false; seen.add(a.id); return true; });
+  const pending = all.filter(a=>!loggedIds['activo-'+a.id]).sort((a,b)=>stageOrder(a)-stageOrder(b));
+  const done    = all.filter(a=>!!loggedIds['activo-'+a.id]);
+  document.getElementById('activosCt').textContent = pending.length;
+  document.getElementById('activosList').innerHTML = [...pending,...done].map(c=>dealCard(c,'activo')).join('')
+    || '<div class="empty"><div class="empty-emoji">✅</div>Todos contactados hoy</div>';
+}
+
+function renderTibiosActive() {
+  const pending = D.tibiosActive.filter(a=>!loggedIds['tibioact-'+a.id]).sort((a,b)=>stageOrder(a)-stageOrder(b));
+  const done    = D.tibiosActive.filter(a=>!!loggedIds['tibioact-'+a.id]);
+  document.getElementById('tibiosActiveCt').textContent = pending.length;
+  document.getElementById('tibiosActiveList').innerHTML = [...pending,...done].map(c=>dealCard(c,'tibioact')).join('')
+    || '<div class="empty"><div class="empty-emoji">🔥</div>Todos contactados hoy</div>';
+}
+
+function renderRandom() {
+  const stageLabel = {reNurture:'🔵 reNurture',reActivar:'🟡 reActivar',reActualizar:'🟠 reActualizar',Lead:'⚪ Lead'};
+  document.getElementById('randomList').innerHTML = todayRandom.map(c => {
+    const logged = !!loggedIds['tibio-'+c.id];
+    const acts = logged
+      ? `<div class="card-actions"><button class="act-btn extra-nota" onclick="openExtraNota(${c.id},'${e(c.name)}',${c.id},'tibio')">📝 Nota extra</button></div>`
+      : `<div class="card-actions">
+          <button class="act-btn call" onclick="openModal('called',${c.id},'${e(c.name)}','',${c.id},'tibio')">📞</button>
+          <button class="act-btn wa" onclick="openModal('whatsapp',${c.id},'${e(c.name)}','',${c.id},'tibio')">💬 WA</button>
+          <button class="act-btn vm" onclick="openModal('voicemail',${c.id},'${e(c.name)}','',${c.id},'tibio')">📳</button>
+          <button class="act-btn nota" onclick="openModal('note',${c.id},'${e(c.name)}','',${c.id},'tibio')">📝</button>
+        </div>`;
+    return `<div class="card${logged?' acted':''}">
       <div class="card-row">
         <div>
-          <div class="card-name">${c.name}</div>
-          ${c.phone?`<div class="card-sub">📱 ${c.phone}</div>`:`<div class="card-sub">Sin teléfono</div>`}
+          <div class="card-name">${logged?'<span class="done-mark">✓ </span>':''}${c.name}</div>
+          ${c.phone?`<div class="card-sub">📱 ${c.phone}</div>`:`<div class="card-sub" style="color:var(--sub);font-size:11px">Sin teléfono</div>`}
         </div>
-        <span class="tag" style="background:var(--border);color:var(--sub);align-self:flex-start;font-size:10px;white-space:nowrap">${stageLabel[c.stage]||c.stage}</span>
+        <span class="tag" style="background:var(--border);color:var(--sub);align-self:flex-start;font-size:10px;white-space:nowrap;margin-left:6px">${stageLabel[c.stage]||c.stage}</span>
       </div>
-      <div class="card-actions">
-        <button class="act-btn call" onclick="openModal('called',${c.id},'${e(c.name)}','',${c.id},'tibio')">📞 Llamó</button>
-        <button class="act-btn wa" onclick="openModal('whatsapp',${c.id},'${e(c.name)}','',${c.id},'tibio')">💬 WA</button>
-        <button class="act-btn vm" onclick="openModal('voicemail',${c.id},'${e(c.name)}','',${c.id},'tibio')">📳 VM</button>
-        <button class="act-btn nota" onclick="openModal('note',${c.id},'${e(c.name)}','',${c.id},'tibio')">📝</button>
-      </div>
+      ${acts}
     </div>`;
   }).join('');
 }
 
+function renderCR() {
+  const pending = D.lomas.filter(c=>!loggedIds['lomas-'+c.id]);
+  const done    = D.lomas.filter(c=>!!loggedIds['lomas-'+c.id]);
+  document.getElementById('crCt').textContent = pending.length;
+  document.getElementById('crList').innerHTML = [...pending,...done].map(c => {
+    const logged = !!loggedIds['lomas-'+c.id];
+    const acts = logged
+      ? `<div class="card-actions"><button class="act-btn extra-nota" onclick="openExtraNota(${c.id},'${e(c.name)}',${c.id},'lomas')">📝 Nota extra</button></div>`
+      : `<div class="card-actions">
+          <button class="act-btn call" onclick="openModal('called',${c.id},'${e(c.name)}','',${c.id},'lomas')">📞</button>
+          <button class="act-btn wa" onclick="openModal('whatsapp',${c.id},'${e(c.name)}','',${c.id},'lomas')">💬 WA</button>
+          <button class="act-btn vm" onclick="openModal('voicemail',${c.id},'${e(c.name)}','',${c.id},'lomas')">📳</button>
+          <button class="act-btn nota" onclick="openModal('note',${c.id},'${e(c.name)}','',${c.id},'lomas')">📝</button>
+        </div>`;
+    return `<div class="card cr-card${logged?' acted':''}">
+      <div class="card-row">
+        <div>
+          <div class="card-name">${logged?'<span class="done-mark">✓ </span>':''}${c.name}</div>
+          ${c.phone?`<div class="card-sub">📱 ${c.phone}</div>`:''}
+        </div>
+        <span class="tag tag-cr" style="align-self:flex-start;margin-left:6px">🌴 CR</span>
+      </div>
+      ${acts}
+    </div>`;
+  }).join('') || '<div class="empty"><div class="empty-emoji">🌴</div>Todos contactados</div>';
+}
+
+function renderONMS() {
+  const conv = D.onms.filter(c=>c.stage==='Conversations');
+  const prop = D.onms.filter(c=>c.stage==='Prospecting');
+  document.getElementById('onmsConvCt').textContent = conv.length;
+  document.getElementById('onmsPropCt').textContent = prop.length;
+  const onmsCard = c => {
+    const logged = !!loggedIds['onms-'+c.id];
+    const acts = logged
+      ? `<div class="card-actions"><button class="act-btn extra-nota" onclick="openExtraNota(${c.id},'${e(c.name)}',${c.id},'onms')">📝 Nota extra</button></div>`
+      : `<div class="card-actions">
+          <button class="act-btn call" onclick="openModal('called',${c.id},'${e(c.name)}','',${c.id},'onms')">📞</button>
+          <button class="act-btn wa" onclick="openModal('whatsapp',${c.id},'${e(c.name)}','',${c.id},'onms')">💬 WA</button>
+          <button class="act-btn email" onclick="openModal('email',${c.id},'${e(c.name)}','',${c.id},'onms')">📧</button>
+          <button class="act-btn nota" onclick="openModal('note',${c.id},'${e(c.name)}','',${c.id},'onms')">📝</button>
+        </div>`;
+    return `<div class="card onms-card${logged?' acted':''}">
+      <div class="card-name">${logged?'<span class="done-mark">✓ </span>':''}${c.name}</div>
+      ${c.stage==='Conversations'?`<div class="card-tags" style="margin-top:4px"><span class="tag tag-onms">💬 En Conversación</span></div>`:''}
+      ${acts}
+    </div>`;
+  };
+  document.getElementById('onmsConvList').innerHTML = conv.map(onmsCard).join('') || '<div class="empty" style="padding:10px">Sin contactos en conversación</div>';
+  document.getElementById('onmsPropList').innerHTML = prop.map(onmsCard).join('');
+}
+
 function renderStats() {
   const history = JSON.parse(localStorage.getItem(HISTORY_KEY)||'{}');
-  history[TODAY] = {pts, max:dailyMax, level:getLevel(pts)};
+  const level = dailyMax>0 ? (pts/dailyMax>=.6?'lv3':pts/dailyMax>=.3?'lv2':pts>0?'lv1':'') : '';
+  history[TODAY] = {pts, max:dailyMax, level, actions:log.length, dump:dumpEntries.length};
   localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
 
   const dates = [];
@@ -675,73 +913,124 @@ function renderStats() {
   const firstDow = new Date(dates[0]+'T12:00:00').getDay();
   const pad = firstDow===0?6:firstDow-1;
   let hml = '';
-  for (let i=0;i<pad;i++) hml += '<div class="heat-day"></div>';
+  for (let i=0;i<pad;i++) hml+='<div class="heat-day"></div>';
   dates.forEach(d => {
     const h = history[d];
-    const cls = h ? 'heat-day '+h.level : 'heat-day';
-    const pct = h ? Math.round(h.pts/h.max*100) : 0;
-    hml += `<div class="${cls}${d===TODAY?' today-marker':''}" title="${d} · ${pct}%"></div>`;
+    const cls = h&&h.pts>0 ? (h.level||'lv1') : '';
+    const pct = h&&h.max ? Math.round(h.pts/h.max*100) : 0;
+    const actions = h ? (h.actions||0) : 0;
+    hml += `<div class="heat-day${cls?' '+cls:''}${d===TODAY?' today-marker':''}" title="${d} · ${pct}% · ${actions} acciones" onclick="showDaySummary('${d}')"></div>`;
   });
   document.getElementById('heatmap').innerHTML = hml;
 
   const s = JSON.parse(localStorage.getItem(STREAK_KEY)||'{"n":0}');
-  const days = Object.values(history).filter(h=>h.pts>0);
-  const avg = days.length ? Math.round(days.reduce((sum,h)=>sum+h.pts/h.max*100,0)/days.length) : 0;
-  const todPct = dailyMax ? Math.round(pts/dailyMax*100) : 0;
+  const rank = getRank(totalXP);
+  const next = getNextRank(totalXP);
   document.getElementById('statsSummary').innerHTML = `
-    <div class="stats-row"><span class="stats-label">Hoy</span><span class="stats-val">${pts} pts · ${todPct}% · ${getLevelLabel(pts)}</span></div>
-    <div class="stats-row"><span class="stats-label">Máximo posible</span><span class="stats-val">${dailyMax} pts</span></div>
+    <div class="stats-row"><span class="stats-label">Rango XP</span><span class="stats-val">${rank.e} ${rank.name} — ${totalXP.toLocaleString()} XP total</span></div>
+    <div class="stats-row"><span class="stats-label">Siguiente rango</span><span class="stats-val">${next?next.e+' '+next.name+' — faltan '+(next.xp-totalXP).toLocaleString()+' XP':'¡Rango máximo!'}</span></div>
+    <div class="stats-row"><span class="stats-label">Hoy</span><span class="stats-val">${pts} pts${dailyMax?' · '+Math.round(pts/dailyMax*100)+'%':''}</span></div>
     <div class="stats-row"><span class="stats-label">Streak</span><span class="stats-val">🔥 ${s.n} días</span></div>
-    <div class="stats-row"><span class="stats-label">Promedio histórico</span><span class="stats-val">${avg}%</span></div>
     <div class="stats-row"><span class="stats-label">Acciones registradas</span><span class="stats-val">${log.length}</span></div>
     <div class="stats-row"><span class="stats-label">Brain dumps</span><span class="stats-val">${dumpEntries.length} entradas (+${dumpEntries.length*D.pts.braindump} pts)</span></div>
   `;
 }
 
-// ─── SCORE ───────────────────────────────────────────────────────────────────
-function updateScore() {
-  document.getElementById('ptsN').textContent = pts;
-  const pct = dailyMax > 0 ? Math.min(pts/dailyMax, 1) : 0;
-  document.getElementById('xpFill').style.width = (pct*100)+'%';
-  document.getElementById('xpText').textContent = `${pts} / ${dailyMax} pts · ${Math.round(pct*100)}%`;
-  const chip = document.getElementById('levelChip');
-  chip.className = 'pill pill-level';
-  const lv = getLevel(pts);
-  chip.textContent = getLevelLabel(pts);
-  if (lv==='basic') chip.classList.add('basic');
-  else if (lv==='medium') chip.classList.add('medium');
-  else if (lv==='onfire') chip.classList.add('onfire');
-  saveStreak(pts);
-  // Persist today to history
-  const h = JSON.parse(localStorage.getItem(HISTORY_KEY)||'{}');
-  h[TODAY] = {pts, max:dailyMax, level:lv};
-  localStorage.setItem(HISTORY_KEY, JSON.stringify(h));
+function showDaySummary(d) {
+  const h = JSON.parse(localStorage.getItem(HISTORY_KEY)||'{}')[d];
+  if (!h||!h.pts) { showToast(d+' — sin actividad'); return; }
+  const pct = h.max ? Math.round(h.pts/h.max*100) : 0;
+  showToast(`${fmtDate(d)} · ${h.pts} pts · ${pct}% · ${h.actions||0} acciones`, 'green');
 }
 
-function getLevel(p) {
-  const r = dailyMax > 0 ? p/dailyMax : 0;
-  if (r >= D.levels.onfire) return 'onfire';
-  if (r >= D.levels.medium) return 'medium';
-  if (r >= D.levels.basic) return 'basic';
-  return 'rookie';
+// ─── SCORE & XP ──────────────────────────────────────────────────────────────
+function getRankIdx(xp) {
+  let idx = 0;
+  for (let i=0;i<RANKS.length;i++) { if (xp>=RANKS[i].xp) idx=i; else break; }
+  return idx;
 }
-function getLevelLabel(p) {
-  return {rookie:'Rookie 🥉', basic:'Basic 🔵', medium:'Medium 🔶', onfire:'On Fire 🔥'}[getLevel(p)];
+function getRank(xp) { return RANKS[getRankIdx(xp)]; }
+function getNextRank(xp) { const i=getRankIdx(xp); return i<RANKS.length-1?RANKS[i+1]:null; }
+
+function updateScore() {
+  document.getElementById('todayPtsN').textContent = pts;
+  const rank = getRank(totalXP);
+  const next = getNextRank(totalXP);
+  document.getElementById('levelChip').textContent = rank.e+' '+rank.name;
+  if (next) {
+    const pct = Math.min((totalXP-rank.xp)/(next.xp-rank.xp),1);
+    document.getElementById('xpFill').style.width = (pct*100)+'%';
+    document.getElementById('xpText').textContent = `${totalXP.toLocaleString()} XP · ${next.e} ${next.name} en ${(next.xp-totalXP).toLocaleString()} XP`;
+  } else {
+    document.getElementById('xpFill').style.width = '100%';
+    document.getElementById('xpText').textContent = `${totalXP.toLocaleString()} XP · 🔱 ¡Rango Omega!`;
+  }
+  saveStreak();
+  const h = JSON.parse(localStorage.getItem(HISTORY_KEY)||'{}');
+  const lvl = dailyMax>0?(pts/dailyMax>=.6?'lv3':pts/dailyMax>=.3?'lv2':pts>0?'lv1':''):'';
+  h[TODAY] = {pts, max:dailyMax, level:lvl, actions:log.length, dump:dumpEntries.length};
+  localStorage.setItem(HISTORY_KEY, JSON.stringify(h));
 }
 
 function addPts(n, sourceEl) {
   pts += n;
+  totalXP += n;
+  saveXP();
   updateScore();
-  // Float animation
   const f = document.createElement('div');
   f.className = 'float-pts';
-  f.textContent = '+'+n+' pts';
-  const x = sourceEl ? Math.min(sourceEl.getBoundingClientRect().left, window.innerWidth-80) : window.innerWidth/2-40;
-  const y = sourceEl ? sourceEl.getBoundingClientRect().top + window.scrollY - 10 : 200;
+  f.textContent = '+'+n+' XP';
+  const x = sourceEl ? Math.min(sourceEl.getBoundingClientRect().left,window.innerWidth-80) : window.innerWidth/2-40;
+  const y = sourceEl ? sourceEl.getBoundingClientRect().top+window.scrollY-10 : 200;
   f.style.cssText = `left:${x}px;top:${y}px;opacity:1`;
   document.body.appendChild(f);
-  requestAnimationFrame(() => { f.style.opacity='0'; f.style.transform='translateY(-60px)'; });
+  requestAnimationFrame(()=>{ f.style.opacity='0'; f.style.transform='translateY(-60px)'; });
   setTimeout(()=>f.remove(), 900);
+}
+
+// ─── RANK MODAL ───────────────────────────────────────────────────────────────
+function openRankModal() {
+  const currentIdx = getRankIdx(totalXP);
+  let html = '';
+  for (let i=0;i<RANKS.length;i++) {
+    const r = RANKS[i];
+    const unlocked = i<=currentIdx;
+    const isCurrent = i===currentIdx;
+    const isNext = i===currentIdx+1;
+    if (isCurrent) {
+      html += `<div class="rank-list-item current">
+        <div class="rank-emoji">${r.e}</div>
+        <div class="rank-info"><div class="rank-name" style="color:var(--accent)">▶ ${r.name}</div><div class="rank-xp">Lv.${i+1} · ${r.xp.toLocaleString()} XP · ACTUAL (${totalXP.toLocaleString()} XP)</div></div>
+        <span class="rank-badge" style="background:rgba(108,99,255,.3);color:#a78bfa">ACTUAL</span>
+      </div>`;
+    } else if (isNext) {
+      html += `<div class="rank-list-item next-rank">
+        <div class="rank-emoji">🔒</div>
+        <div class="rank-info"><div class="rank-name" style="color:var(--accent2)">${r.name}</div><div class="rank-xp">Lv.${i+1} · faltan ${(r.xp-totalXP).toLocaleString()} XP</div></div>
+        <span class="rank-badge" style="background:rgba(74,222,128,.2);color:var(--accent2)">PRÓXIMO</span>
+      </div>`;
+    } else if (unlocked) {
+      html += `<div class="rank-list-item">
+        <div class="rank-emoji">${r.e}</div>
+        <div class="rank-info"><div class="rank-name">✓ ${r.name}</div><div class="rank-xp">Lv.${i+1} · ${r.xp.toLocaleString()} XP</div></div>
+      </div>`;
+    } else {
+      html += `<div class="rank-list-item locked">
+        <div class="rank-emoji" style="font-size:16px">???</div>
+        <div class="rank-info"><div class="rank-name" style="color:var(--sub)">???</div><div class="rank-xp">Lv.${i+1} · ???</div></div>
+      </div>`;
+    }
+  }
+  document.getElementById('rankModalSub').textContent = `${RANKS[currentIdx].e} ${RANKS[currentIdx].name} — ${totalXP.toLocaleString()} XP acumulados`;
+  document.getElementById('rankList').innerHTML = html;
+  document.getElementById('rankModal').classList.add('open');
+  setTimeout(()=>{
+    const items = document.querySelectorAll('#rankList .rank-list-item');
+    if (items[currentIdx]) items[currentIdx].scrollIntoView({block:'center'});
+  },150);
+}
+function closeRankModalClick(ev) {
+  if (ev.target.id==='rankModal') document.getElementById('rankModal').classList.remove('open');
 }
 
 // ─── TABS ────────────────────────────────────────────────────────────────────
@@ -758,10 +1047,10 @@ let _m = {};
 function openModal(type, contactId, name, taskName, personId, section) {
   _m = {type, contactId, name, taskName, personId, section};
   document.getElementById('modalTitle').textContent = name;
-  document.getElementById('modalSub').textContent = taskName || '';
+  document.getElementById('modalSub').textContent = taskName || section;
   document.getElementById('modalNote').value = '';
   document.getElementById('noteWarn').style.display = 'none';
-  const isTask = section === 'task';
+  const isTask = section==='task';
   const ap = getActionPts('action', section);
   let btns = '';
   if (isTask) btns += `<button class="modal-btn done" onclick="doLog('complete_task')">✅ Completar Tarea (+${D.pts.complete_task})</button>`;
@@ -777,26 +1066,40 @@ function openModal(type, contactId, name, taskName, personId, section) {
   document.getElementById('actionModal').classList.add('open');
 }
 
+function openExtraNota(contactId, name, personId, section) {
+  _m = {type:'note', contactId, name, taskName:'Nota adicional', personId, section};
+  document.getElementById('modalTitle').textContent = name;
+  document.getElementById('modalSub').textContent = '📝 Agregar nota adicional';
+  document.getElementById('modalNote').value = '';
+  document.getElementById('noteWarn').style.display = 'none';
+  document.getElementById('modalActions').innerHTML = `
+    <button class="modal-btn nota" onclick="doLog('note')" style="grid-column:1/-1">📝 Guardar Nota (+${D.pts.action})</button>
+    <button class="modal-btn cancel" onclick="closeModal()">Cancelar</button>`;
+  document.getElementById('actionModal').classList.add('open');
+}
+
 function doLog(type) {
   const note = document.getElementById('modalNote').value.trim();
   if (!note) document.getElementById('noteWarn').style.display = 'block';
   const {contactId, name, taskName, personId, section} = _m;
   const p = getActionPts(type, section);
   log.push({
-    timestamp: new Date().toISOString(), type, personId, personName: name,
-    taskName, contactId, section, note, pts: p,
-    pi: buildPI(type, personId, name, note, contactId)
+    timestamp:new Date().toISOString(), type, personId, personName:name,
+    taskName, contactId, section, note, pts:p,
+    pi:buildPI(type, personId, name, note, contactId)
   });
-  if (type === 'complete_task') loggedIds['task-done-'+contactId] = true;
+  if (type==='complete_task') loggedIds['task-done-'+contactId] = true;
   else loggedIds[section+'-'+contactId] = true;
   addPts(p, document.getElementById('actionModal'));
   saveSession();
   closeModal();
-  showToast('✅ '+name+' — +'+p+' pts', 'green');
-  if (section==='tibio') renderTibios();
-  else if (section==='lomas') renderActivos();
-  else if (section==='proc'||section==='active') renderActivos();
-  else renderUrgentes();
+  showToast('✅ '+name+' — +'+p+' XP', 'green');
+  if (section==='task') renderUrgentes();
+  else if (section==='activo') renderActivos();
+  else if (section==='tibioact') renderTibiosActive();
+  else if (section==='tibio') renderRandom();
+  else if (section==='lomas') renderCR();
+  else if (section==='onms') renderONMS();
 }
 
 function buildPI(type, personId, name, note, taskId) {
@@ -837,6 +1140,31 @@ function confirmPostpone() {
   renderUrgentes();
 }
 
+// ─── CUSTOM DONE ──────────────────────────────────────────────────────────────
+function openCustomDone() {
+  document.getElementById('cdoneName').value = '';
+  document.getElementById('cdoneContact').value = '';
+  document.getElementById('customDoneModal').classList.add('open');
+  setTimeout(()=>document.getElementById('cdoneName').focus(), 200);
+}
+function closeCustomDone() { document.getElementById('customDoneModal').classList.remove('open'); }
+function closeCustomDoneClick(ev) { if (ev.target.id==='customDoneModal') closeCustomDone(); }
+function confirmCustomDone() {
+  const taskName = document.getElementById('cdoneName').value.trim();
+  const contactName = document.getElementById('cdoneContact').value.trim() || 'Romano';
+  if (!taskName) { showToast('Escribe qué hiciste','warn'); return; }
+  const p = D.pts.custom_done;
+  log.push({
+    timestamp:new Date().toISOString(), type:'custom_done', personId:614,
+    personName:contactName, taskName, contactId:null, section:'custom', note:taskName, pts:p,
+    pi:{mcp:'add_note', params:{personId:614, note:'✅ Hecho: '+taskName}}
+  });
+  addPts(p, document.getElementById('customDoneModal'));
+  saveSession();
+  closeCustomDone();
+  showToast('✅ "'+taskName.slice(0,30)+'" registrado — +'+p+' XP','green');
+}
+
 // ─── BRAIN DUMP ──────────────────────────────────────────────────────────────
 function toggleDump() {
   const d = document.getElementById('dumpDrawer');
@@ -852,37 +1180,35 @@ function addDump() {
   addPts(D.pts.braindump, document.getElementById('dumpDrawer'));
   saveSession();
   renderDump();
-  showToast('💭 +10 pts — anotado!','green');
+  showToast('💭 +10 XP — anotado!','green');
 }
 function renderDump() {
   const el = document.getElementById('dumpEntries');
-  if (!dumpEntries.length) { el.innerHTML = '<div class="dump-empty">💭 Sin entradas aún</div>'; return; }
-  el.innerHTML = dumpEntries.map(en => `
+  if (!dumpEntries.length) { el.innerHTML='<div class="dump-empty">💭 Sin entradas aún</div>'; return; }
+  el.innerHTML = dumpEntries.map(en=>`
     <div class="dump-entry">
       <div class="dump-entry-text">${eh(en.text)}</div>
       <div class="dump-entry-time">${fmtTime(en.timestamp)}</div>
     </div>`).join('');
 }
-document.addEventListener('keydown', ev => {
-  if ((ev.metaKey||ev.ctrlKey) && ev.key==='Enter' && document.getElementById('dumpDrawer').classList.contains('open')) addDump();
+document.addEventListener('keydown', ev=>{
+  if ((ev.metaKey||ev.ctrlKey)&&ev.key==='Enter'&&document.getElementById('dumpDrawer').classList.contains('open')) addDump();
 });
 
 // ─── EXPORT ──────────────────────────────────────────────────────────────────
 function exportLog() {
-  // Penalty: postponed tasks with no follow-up action = -10 pts each
-  // Checks by taskId AND personId (so a call logged from the contact card also counts)
   const abandoned = Object.keys(postponed).filter(id => {
     if (loggedIds['task-done-'+id]) return false;
-    if (log.some(l => l.contactId==id && l.type!=='postpone')) return false;
-    const task = D.tasks.find(t => String(t.id) === id);
-    if (task && log.some(l => l.personId==task.personId && l.type!=='postpone')) return false;
+    if (log.some(l=>l.contactId==id&&l.type!=='postpone')) return false;
+    const task = D.tasks.find(t=>String(t.id)===id);
+    if (task&&log.some(l=>l.personId==task.personId&&l.type!=='postpone')) return false;
     return true;
   }).length;
-  const finalPts = Math.max(0, pts - abandoned*10);
+  const finalPts = Math.max(0, pts-abandoned*10);
   const payload = {
     date:TODAY, agent:D.agent,
-    summary:{pts:finalPts, ptsRaw:pts, dailyMax, pct:Math.round(finalPts/dailyMax*100),
-      level:getLevel(finalPts), actionsLogged:log.length, dumpEntries:dumpEntries.length, abandonedPenalty:abandoned*10},
+    summary:{pts:finalPts, ptsRaw:pts, totalXP, dailyMax, pct:dailyMax?Math.round(finalPts/dailyMax*100):0,
+      rank:getRank(totalXP).name, actionsLogged:log.length, dumpEntries:dumpEntries.length, abandonedPenalty:abandoned*10},
     actions:log, braindump:dumpEntries,
     postponed:Object.entries(postponed).map(([id,v])=>({taskId:parseInt(id),...v}))
   };
@@ -897,12 +1223,12 @@ function exportLog() {
 // ─── UTILS ───────────────────────────────────────────────────────────────────
 function showToast(msg, type) {
   const t = document.getElementById('toast');
-  t.textContent = msg; t.className = 'toast show'+(type?' '+type:'');
-  clearTimeout(t._to); t._to = setTimeout(()=>t.classList.remove('show'),2400);
+  t.textContent = msg; t.className='toast show'+(type?' '+type:'');
+  clearTimeout(t._to); t._to = setTimeout(()=>t.classList.remove('show'),2800);
 }
 function fmtDate(d) { if(!d) return ''; const [,m,day]=d.split('-'); return day+'/'+m; }
 function fmtDateHeader(d) {
-  const days=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'], ms=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const days=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],ms=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
   const dt=new Date(d+'T12:00:00'); return `${days[dt.getDay()]} ${dt.getDate()} ${ms[dt.getMonth()]} ${dt.getFullYear()}`;
 }
 function fmtTime(iso) { const d=new Date(iso); return d.toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'}); }
