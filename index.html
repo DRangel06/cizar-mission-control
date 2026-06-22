@@ -648,7 +648,7 @@ function exportPendingSession() {
     return true;
   }).length;
   const finalPts = Math.max(0,(s.pts||0)-abandoned*10);
-  const payload = {date:s.date,agent:D.agent,summary:{pts:finalPts,ptsRaw:s.pts||0,dailyMax:sm,pct:sm?Math.round(finalPts/sm*100):0,level:'',actionsLogged:(s.log||[]).length,dumpEntries:(s.dumpEntries||[]).length,abandonedPenalty:abandoned*10},actions:s.log||[],braindump:s.dumpEntries||[],postponed:Object.entries(s.postponed||{}).map(([id,v])=>({taskId:parseInt(id),...v}))};
+  const payload = {date:s.date,agent:D.agent,summary:{pts:finalPts,ptsRaw:s.pts||0,totalXP,dailyMax:sm,pct:sm?Math.round(finalPts/sm*100):0,level:'',actionsLogged:(s.log||[]).length,dumpEntries:(s.dumpEntries||[]).length,abandonedPenalty:abandoned*10,rank:getRank(totalXP).name,streak:JSON.parse(localStorage.getItem(STREAK_KEY)||'{"d":"","n":0}')},actions:s.log||[],braindump:s.dumpEntries||[],postponed:Object.entries(s.postponed||{}).map(([id,v])=>({taskId:parseInt(id),...v}))};
   const blob = new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
   const a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='cizar-log-'+s.date+'.json'; a.click();
   dismissPendingSession();
@@ -706,11 +706,7 @@ function getActionPts(type, section) {
 
 // ─── STREAK ──────────────────────────────────────────────────────────────────
 function loadStreak() {
-  let s = JSON.parse(localStorage.getItem(STREAK_KEY)||'null');
-  if (!s) {
-    s = {d: offsetDate(TODAY,-1), n:4};
-    localStorage.setItem(STREAK_KEY, JSON.stringify(s));
-  }
+  const s = JSON.parse(localStorage.getItem(STREAK_KEY)||'{"d":"","n":0}');
   document.getElementById('streakN').textContent = s.n;
 }
 function saveStreak() {
@@ -1249,7 +1245,8 @@ function exportLog() {
   const payload = {
     date:TODAY, agent:D.agent,
     summary:{pts:finalPts, ptsRaw:pts, totalXP, dailyMax, pct:dailyMax?Math.round(finalPts/dailyMax*100):0,
-      rank:getRank(totalXP).name, actionsLogged:log.length, dumpEntries:dumpEntries.length, abandonedPenalty:abandoned*10},
+      rank:getRank(totalXP).name, actionsLogged:log.length, dumpEntries:dumpEntries.length, abandonedPenalty:abandoned*10,
+      streak:JSON.parse(localStorage.getItem(STREAK_KEY)||'{"d":"","n":0}')},
     actions:log, braindump:dumpEntries,
     postponed:Object.entries(postponed).map(([id,v])=>({taskId:parseInt(id),...v}))
   };
