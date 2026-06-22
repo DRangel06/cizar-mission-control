@@ -572,6 +572,7 @@ let todayRandom = [], currentPostponeTask = null;
 const TODAY = D.date;
 const STREAK_KEY = "cizar_streak_v2", HISTORY_KEY = "cizar_history_v2";
 const SESSION_KEY = "cizar_session_v2", XP_KEY = "cizar_xp_v1";
+const REVIEWS_KEY = "cizar_reviews_v1";
 
 function saveSession() {
   localStorage.setItem(SESSION_KEY, JSON.stringify({date:TODAY, pts, log, dumpEntries, postponed, loggedIds, dailyMax}));
@@ -644,8 +645,9 @@ function dismissPendingSession() {
   if (!localStorage.getItem(STREAK_KEY)) localStorage.setItem(STREAK_KEY, JSON.stringify({d:'2026-06-20',n:4}));
   if (!localStorage.getItem(HISTORY_KEY)) localStorage.setItem(HISTORY_KEY, JSON.stringify({
     '2026-06-19':{pts:155,max:1000,level:'lv1',actions:9,dump:7},
-    '2026-06-20':{pts:23,max:1130,level:'lv1',actions:4,dump:8}
+    '2026-06-20':{pts:161,max:1130,level:'lv1',actions:21,dump:13}
   }));
+  if (!localStorage.getItem(REVIEWS_KEY)) localStorage.setItem(REVIEWS_KEY, JSON.stringify({}));
 })();
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -949,8 +951,15 @@ function renderStats() {
 function showDaySummary(d) {
   const h = JSON.parse(localStorage.getItem(HISTORY_KEY)||'{}')[d];
   if (!h||!h.pts) { showToast(d+' — sin actividad'); return; }
+  const reviews = JSON.parse(localStorage.getItem(REVIEWS_KEY)||'{}');
   const pct = h.max ? Math.round(h.pts/h.max*100) : 0;
-  showToast(`${fmtDate(d)} · ${h.pts} pts · ${pct}% · ${h.actions||0} acciones`, 'green');
+  const report = reviews[d] || `${d}\n${h.pts} pts · ${pct}% · ${h.actions||0} acciones · ${h.dump||0} dumps\n\n(Sin reporte detallado aún)`;
+  document.getElementById('reviewModalDate').textContent = fmtDate(d) + ' — ' + h.pts + ' pts · ' + pct + '%';
+  document.getElementById('reviewModalBody').textContent = report;
+  document.getElementById('reviewModal').style.display = 'flex';
+}
+function closeReviewModal() {
+  document.getElementById('reviewModal').style.display = 'none';
 }
 
 // ─── SCORE & XP ──────────────────────────────────────────────────────────────
@@ -1246,5 +1255,18 @@ function offsetDate(dateStr, days) { const d=new Date(dateStr+'T12:00:00'); d.se
 function e(s) { return (s||'').replace(/'/g,"\\'").replace(/"/g,'&quot;'); }
 function eh(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 </script>
+
+<!-- REVIEW MODAL -->
+<div id="reviewModal" onclick="if(event.target===this)closeReviewModal()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:9999;align-items:flex-start;justify-content:center;padding:24px 16px;box-sizing:border-box;overflow:auto">
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;width:100%;max-width:520px;margin:auto;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.6)">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--border)">
+      <span id="reviewModalDate" style="font-weight:700;font-size:14px;color:var(--text)"></span>
+      <button onclick="closeReviewModal()" style="background:transparent;border:none;color:var(--sub);font-size:24px;cursor:pointer;line-height:1;padding:0 2px">×</button>
+    </div>
+    <div style="padding:16px 18px;max-height:70vh;overflow-y:auto">
+      <pre id="reviewModalBody" style="margin:0;white-space:pre-wrap;word-break:break-word;font-family:'Courier New',monospace;font-size:11.5px;color:var(--text);line-height:1.7"></pre>
+    </div>
+  </div>
+</div>
 </body>
 </html>
